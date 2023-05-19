@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_point"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_alignBottom="@id/recommend_recycler"/>
+
+        <TextView
+            android:id="@+id/tv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_point"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="大家都在用"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/user_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_user"/>
+
+        <TextView
+            android:id="@+id/tv_js_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="巨世精选"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/user_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_recycler_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/tv_js_choice"
+            android:text="更多>"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/choice_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_js_choice"/>
+
+        <TextView
+            android:id="@+id/tv_watch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="追剧不能停"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/choice_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/watch_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_watch"/>
+
+        <TextView
+            android:id="@+id/tv_barrage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="弹幕专区"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/watch_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/barrage_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_barrage"/>
+
+        <TextView
+            android:id="@+id/tv_relax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="轻松一刻"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/barrage_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/relax_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_relax"/>
+
+        <TextView
+            android:id="@+id/tv_workpiece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="办公效率up up"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/relax_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/workpiece_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_workpiece"/>
+
+        <TextView
+            android:id="@+id/tv_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新闻热点一网打尽"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/workpiece_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_news"/>
+
+        <TextView
+            android:id="@+id/tv_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="读万卷书"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/news_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/read_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_read"
+            android:layout_marginBottom="10dp"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

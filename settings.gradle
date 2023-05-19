@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+//        google()
+//        mavenCentral()
+//        gradlePluginPortal()
+        maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+//        google()
+//        mavenCentral()
+        maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+        maven { url "https://jitpack.io" }
+    }
+}
+rootProject.name = "JS_APP_STORE"
+include ':app'

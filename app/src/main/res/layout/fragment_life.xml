@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="美食外卖"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/food_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_food"/>
+
+        <TextView
+            android:id="@+id/tv_shopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="网上购物"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/food_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/food_recycler_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/tv_shopping"
+            android:text="更多>"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shopping_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_shopping"/>
+
+        <TextView
+            android:id="@+id/tv_serve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="生活服务"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/shopping_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/serve_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_serve"/>
+
+        <TextView
+            android:id="@+id/tv_practical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="实用工具"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/serve_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/practical_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_practical"/>
+
+        <TextView
+            android:id="@+id/tv_sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="运动健身"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/practical_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sport_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_sport"/>
+
+        <TextView
+            android:id="@+id/tv_health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="医疗健康"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/sport_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/health_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_health"/>
+
+        <TextView
+            android:id="@+id/tv_investment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="财富投资"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/health_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/investment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_investment"/>
+
+        <TextView
+            android:id="@+id/tv_bring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="育儿亲子"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/investment_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bring_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_bring"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

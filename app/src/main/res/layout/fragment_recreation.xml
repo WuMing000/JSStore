@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="视频娱乐"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/video_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_video"/>
+
+        <TextView
+            android:id="@+id/tv_cartoon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="漫画天地"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/video_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/video_recycler_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/tv_cartoon"
+            android:text="更多>"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cartoon_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_cartoon"/>
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资讯头条"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/cartoon_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_message"/>
+
+        <TextView
+            android:id="@+id/tv_hotspot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新闻热点"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/message_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hotspot_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_hotspot"/>
+
+        <TextView
+            android:id="@+id/tv_reel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="读万卷书"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/hotspot_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reel_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_reel"/>
+
+        <TextView
+            android:id="@+id/tv_broadcast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="有声电台"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/reel_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/broadcast_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_broadcast"/>
+
+        <TextView
+            android:id="@+id/tv_live"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直播精选"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/broadcast_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/live_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_live"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.APPInformationActivity"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="#747679">
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="返回"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="fitXY"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="11111"
+                android:textSize="26sp"
+                android:layout_toRightOf="@id/iv_icon"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_app_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="您好11111"
+                android:layout_below="@id/tv_app_name"
+                android:layout_toRightOf="@id/iv_icon"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"/>
+
+            <Button
+                android:id="@+id/btn_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="打开"
+                android:layout_marginTop="10dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_app_above"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="应用介绍"
+                android:textSize="26sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_below="@id/iv_icon"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/tv_introduce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_introduce"
+                android:textSize="22sp"
+                android:layout_below="@id/tv_app_above"
+                android:layout_marginTop="5dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

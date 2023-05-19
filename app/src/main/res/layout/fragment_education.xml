@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_classroom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="在线课堂"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/classroom_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_classroom"/>
+
+        <TextView
+            android:id="@+id/tv_textual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/classroom_recycler_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="考证必备"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/classroom_recycler_view"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/tv_textual"
+            android:text="更多>"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/textual_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_textual"/>
+
+        <TextView
+            android:id="@+id/tv_english"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="英语学习"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/textual_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/english_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_english"/>
+
+        <TextView
+            android:id="@+id/tv_translate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="词典翻译"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/english_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/translate_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_translate"/>
+
+        <TextView
+            android:id="@+id/tv_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名师课堂"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/translate_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/teacher_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_teacher"/>
+
+        <TextView
+            android:id="@+id/tv_children"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="少儿英语"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/teacher_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/children_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_children"/>
+
+        <TextView
+            android:id="@+id/tv_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绘本阅读"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/children_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/picture_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_picture"/>
+
+        <TextView
+            android:id="@+id/tv_paint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绘画专区"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/picture_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/paint_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_paint"/>
+
+        <TextView
+            android:id="@+id/tv_enlighten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启蒙教育"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/paint_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/enlighten_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_enlighten"/>
+
+        <TextView
+            android:id="@+id/tv_preschool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="学前教育"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/enlighten_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/preschool_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_preschool"/>
+
+        <TextView
+            android:id="@+id/tv_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中小学教育"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/preschool_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/middle_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_middle"/>
+
+        <TextView
+            android:id="@+id/tv_programme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="艺术编程"
+            android:textSize="26sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/middle_recycler_view"
+            android:layout_margin="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/programme_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_programme"/>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
