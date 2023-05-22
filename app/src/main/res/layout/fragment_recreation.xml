@@ -136,7 +136,8 @@
             android:id="@+id/live_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_live"/>
+            android:layout_below="@id/tv_live"
+            android:layout_marginBottom="30dp"/>
 
     </RelativeLayout>
 

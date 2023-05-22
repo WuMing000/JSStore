@@ -101,22 +101,22 @@ public class OfficeFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_OFFICE_INFORMATION.equals(url.split("/")[3])) {
-                                        officeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        officeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_DOCUMENT_INFORMATION.equals(url.split("/")[3])) {
-                                        documentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        documentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_COMMUNICATION_INFORMATION.equals(url.split("/")[3])) {
-                                        communicationList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        communicationList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_THOUGHT_INFORMATION.equals(url.split("/")[3])) {
-                                        thoughtList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        thoughtList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     } else if (Contacts.GET_INSTRUMENT_INFORMATION.equals(url.split("/")[3])) {
-                                        instrumentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        instrumentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x008, 100);
                                     } else if (Contacts.GET_NETWORK_DISK_INFORMATION.equals(url.split("/")[3])) {
-                                        networkDiskList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        networkDiskList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x009, 100);
                                     }
                                 }
@@ -212,8 +212,8 @@ public class OfficeFragment extends Fragment {
         thoughtRecyclerView.setAdapter(thoughtRecyclerViewAdapter);
         networkDiskRecyclerView.setAdapter(networkDiskRecyclerViewAdapter);
         instrumentRecyclerView.setAdapter(instrumentRecyclerViewAdapter);
-        documentRecyclerView.setAdapter(communicationRecyclerViewAdapter);
-        communicationRecyclerView.setAdapter(instrumentRecyclerViewAdapter);
+        documentRecyclerView.setAdapter(documentRecyclerViewAdapter);
+        communicationRecyclerView.setAdapter(communicationRecyclerViewAdapter);
 
         if (savedInstanceState != null) {
             for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("userList")) {
@@ -350,6 +350,12 @@ public class OfficeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.e(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy");
         if (receiver != null) {
             MyApplication.getInstance().getContext().unregisterReceiver(receiver);
         }

@@ -97,16 +97,16 @@ public class GameFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_PLAY_INFORMATION.equals(url.split("/")[3])) {
-                                        playList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        playList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_CHESS_INFORMATION.equals(url.split("/")[3])) {
-                                        chessList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        chessList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_PUZZLE_INFORMATION.equals(url.split("/")[3])) {
-                                        puzzleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        puzzleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_CARD_INFORMATION.equals(url.split("/")[3])) {
-                                        cardList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                        cardList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     }
                                 }
@@ -286,6 +286,12 @@ public class GameFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.e(TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy");
         if (receiver != null) {
             MyApplication.getInstance().getContext().unregisterReceiver(receiver);
         }

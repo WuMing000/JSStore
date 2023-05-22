@@ -157,28 +157,28 @@ public class RecommendFragment extends Fragment {
                                     appState = "安装";
                                 }
                                 if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
-                                    userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x007, 100);
                                 } else if (Contacts.GET_CHOICE_INFORMATION.equals(url.split("/")[3])) {
-                                    choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x008, 100);
                                 } else if (Contacts.GET_WATCH_INFORMATION.equals(url.split("/")[3])) {
-                                    watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x009, 100);
                                 } else if (Contacts.GET_BARRAGE_INFORMATION.equals(url.split("/")[3])) {
-                                    barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x010, 100);
                                 } else if (Contacts.GET_RELAX_INFORMATION.equals(url.split("/")[3])) {
-                                    relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x011, 100);
                                 } else if (Contacts.GET_WORKPIECE_INFORMATION.equals(url.split("/")[3])) {
-                                    workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x012, 100);
                                 } else if (Contacts.GET_NEWS_INFORMATION.equals(url.split("/")[3])) {
-                                    newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x013, 100);
                                 } else if (Contacts.GET_READ_INFORMATION.equals(url.split("/")[3])) {
-                                    readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
+                                    readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
                                     handler.sendEmptyMessageAtTime(0x014, 100);
                                 }
                             }
@@ -509,15 +509,15 @@ public class RecommendFragment extends Fragment {
         super.onStop();
         Log.e(TAG, "onStop");
         handler.sendEmptyMessageAtTime(0x004, 100);
-        if (receiver != null) {
-            MyApplication.getInstance().getContext().unregisterReceiver(receiver);
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.e(TAG, "onDestroy");
+        if (receiver != null) {
+            MyApplication.getInstance().getContext().unregisterReceiver(receiver);
+        }
     }
 
     private void initAPPData() {

@@ -19,15 +19,17 @@ public class APPLocalBean implements Serializable, Parcelable {
     private String appPackage;
     private String appInformation;
     private String appDownLoadURL;
+    private String appIntroduce;
     private String appState;
 
-    public APPLocalBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appState) {
+    public APPLocalBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce, String appState) {
         this.appId = appId;
         this.appIcon = appIcon;
         this.appName = appName;
         this.appPackage = appPackage;
         this.appInformation = appInformation;
         this.appDownLoadURL = appDownLoadURL;
+        this.appIntroduce = appIntroduce;
         this.appState = appState;
     }
 
@@ -38,6 +40,7 @@ public class APPLocalBean implements Serializable, Parcelable {
         appPackage = in.readString();
         appInformation = in.readString();
         appDownLoadURL = in.readString();
+        appIntroduce = in.readString();
         appState = in.readString();
     }
 
@@ -52,6 +55,14 @@ public class APPLocalBean implements Serializable, Parcelable {
             return new APPLocalBean[size];
         }
     };
+
+    public String getAppIntroduce() {
+        return appIntroduce;
+    }
+
+    public void setAppIntroduce(String appIntroduce) {
+        this.appIntroduce = appIntroduce;
+    }
 
     public String getAppState() {
         return appState;
@@ -118,6 +129,7 @@ public class APPLocalBean implements Serializable, Parcelable {
                 ", appPackage='" + appPackage + '\'' +
                 ", appInformation='" + appInformation + '\'' +
                 ", appDownLoadURL='" + appDownLoadURL + '\'' +
+                ", appIntroduce='" + appIntroduce + '\'' +
                 ", appState='" + appState + '\'' +
                 '}';
     }
@@ -135,6 +147,7 @@ public class APPLocalBean implements Serializable, Parcelable {
         dest.writeString(appPackage);
         dest.writeString(appInformation);
         dest.writeString(appDownLoadURL);
+        dest.writeString(appIntroduce);
         dest.writeString(appState);
     }
 }

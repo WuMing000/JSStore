@@ -94,6 +94,7 @@ public class APPInformationActivity extends BaseActivity {
         Glide.with(MyApplication.getInstance().getContext()).load(appLocalBean.getAppIcon()).into(ivIcon);
         tvAppName.setText(appLocalBean.getAppName());
         tvAppApplication.setText(appLocalBean.getAppInformation());
+        tvIntroduce.setText(appLocalBean.getAppIntroduce());
     }
 
     private void initOnClickListener() {

@@ -21,14 +21,25 @@ public class APPServerBean implements Serializable {
     private String appInformation;
     @SerializedName("appDownLoadURL")
     private String appDownLoadURL;
+    @SerializedName("appIntroduce")
+    private String appIntroduce;
 
-    public APPServerBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL) {
+    public APPServerBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce) {
         this.appId = appId;
         this.appIcon = appIcon;
         this.appName = appName;
         this.appPackage = appPackage;
         this.appInformation = appInformation;
         this.appDownLoadURL = appDownLoadURL;
+        this.appIntroduce = appIntroduce;
+    }
+
+    public String getAppIntroduce() {
+        return appIntroduce;
+    }
+
+    public void setAppIntroduce(String appIntroduce) {
+        this.appIntroduce = appIntroduce;
     }
 
     public String getAppPackage() {
