@@ -149,13 +149,13 @@ public class RecommendFragment extends Fragment {
                             super.run();
                             for (APPServerBean appServerBean : list) {
                                 String appState = "下载";
-//                                boolean appExists = CustomUtil.isAppExists(appServerBean.getAppPackage());
-//                                File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appServerBean.getAppPackage() + ".apk");
-//                                if (appExists) {
-//                                    appState = "打开";
-//                                } else if (saveFile.exists()) {
-//                                    appState = "安装";
-//                                }
+                                boolean appExists = CustomUtil.isAppInstalled(appServerBean.getAppPackage());
+                                File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appServerBean.getAppPackage() + ".apk");
+                                if (appExists) {
+                                    appState = "打开";
+                                } else if (saveFile.exists()) {
+                                    appState = "安装";
+                                }
                                 if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
                                     userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appState));
                                     handler.sendEmptyMessageAtTime(0x007, 100);
@@ -364,135 +364,137 @@ public class RecommendFragment extends Fragment {
         super.onResume();
         Log.e(TAG, "onResume");
 
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                for (APPLocalBean appLocalBean : userList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x007, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x007, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x007, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : choiceList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x008, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x008, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x008, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : watchList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x009, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x009, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x009, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : barrageList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x010, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x010, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x010, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : relaxList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x011, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x011, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x011, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : workpieceList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x012, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x012, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x012, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : newsList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x013, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x013, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x013, 100);
-                    }
-                }
-
-                for (APPLocalBean appLocalBean : readList) {
-                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-                    if (appExists) {
-                        appLocalBean.setAppState("打开");
-                        handler.sendEmptyMessageAtTime(0x014, 100);
-                    } else if (saveFile.exists()) {
-                        appLocalBean.setAppState("安装");
-                        handler.sendEmptyMessageAtTime(0x014, 100);
-                    } else {
-                        appLocalBean.setAppState("下载");
-                        handler.sendEmptyMessageAtTime(0x014, 100);
-                    }
-                }
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+//                for (APPLocalBean appLocalBean : userList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x007, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x007, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x007, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : choiceList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x008, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x008, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x008, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : watchList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x009, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x009, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x009, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : barrageList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x010, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x010, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x010, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : relaxList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x011, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x011, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x011, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : workpieceList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x012, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x012, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x012, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : newsList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x013, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x013, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x013, 100);
+//                    }
+//                }
+//
+//                for (APPLocalBean appLocalBean : readList) {
+//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//                    if (appExists) {
+//                        appLocalBean.setAppState("打开");
+//                        handler.sendEmptyMessageAtTime(0x014, 100);
+//                    } else if (saveFile.exists()) {
+//                        appLocalBean.setAppState("安装");
+//                        handler.sendEmptyMessageAtTime(0x014, 100);
+//                    } else {
+//                        appLocalBean.setAppState("下载");
+//                        handler.sendEmptyMessageAtTime(0x014, 100);
+//                    }
+//                }
+//            }
+//        }.start();
 
         receiver = new DownloadReceiver();
         IntentFilter intentFilter = new IntentFilter("js.download.progress");
         intentFilter.addAction("js.app.download.completed");
+        intentFilter.addAction("js.app.install.completed");
+        intentFilter.addAction("js.app.remove.completed");
         MyApplication.getInstance().getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -865,6 +867,104 @@ public class RecommendFragment extends Fragment {
                 for (APPLocalBean appLocalBean : readList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                         appLocalBean.setAppState("安装");
+                        readRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if ("js.app.install.completed".equals(intent.getAction())) {
+                for (APPLocalBean appLocalBean : userList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        userRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : choiceList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        choiceRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : watchList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        watchRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : barrageList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        barrageRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : relaxList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        relaxRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : workpieceList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        workpieceRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : newsList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        newsRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : readList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("打开");
+                        readRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+                for (APPLocalBean appLocalBean : userList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        userRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : choiceList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        choiceRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : watchList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        watchRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : barrageList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        barrageRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : relaxList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        relaxRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : workpieceList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        workpieceRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : newsList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
+                        newsRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+                for (APPLocalBean appLocalBean : readList) {
+                    if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                        appLocalBean.setAppState("下载");
                         readRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }

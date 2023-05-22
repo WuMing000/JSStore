@@ -64,7 +64,7 @@ public class APPInformationActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
+        boolean appExists = CustomUtil.isAppInstalled(appLocalBean.getAppPackage());
         File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
         if (appExists) {
             btnState.setText("打开");

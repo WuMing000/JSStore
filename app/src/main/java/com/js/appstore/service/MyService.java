@@ -136,6 +136,7 @@ public class MyService extends Service {
         IntentFilter installFilter = new IntentFilter();
         installFilter.addDataScheme("package");
         installFilter.addAction("android.intent.action.PACKAGE_ADDED");
+        installFilter.addAction("android.intent.action.PACKAGE_REMOVED");
         registerReceiver(myInstalledReceiver, installFilter);
     }
 
