@@ -174,6 +174,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        etSource.setText("");
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 //        stopService(intent);

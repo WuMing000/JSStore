@@ -6,13 +6,14 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
     android:background="@drawable/selector_item_bg">
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher"
         android:layout_margin="10dp"/>
@@ -22,9 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="应用名字"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="#442244"/>
 
     <TextView
@@ -37,7 +40,7 @@
         android:layout_marginBottom="5dp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/btn_state"
