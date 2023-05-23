@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -113,40 +114,52 @@ public class EducationFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_CLASSROOM_INFORMATION.equals(url.split("/")[3])) {
-                                        classroomList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        classroomList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_TEXTUAL_INFORMATION.equals(url.split("/")[3])) {
-                                        textualList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        textualList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_ENGLISH_INFORMATION.equals(url.split("/")[3])) {
-                                        englishList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        englishList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_TRANSLATE_INFORMATION.equals(url.split("/")[3])) {
-                                        translateList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        translateList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     } else if (Contacts.GET_TEACHER_INFORMATION.equals(url.split("/")[3])) {
-                                        teacherList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        teacherList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x008, 100);
                                     } else if (Contacts.GET_CHILDREN_INFORMATION.equals(url.split("/")[3])) {
-                                        childrenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        childrenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x009, 100);
                                     } else if (Contacts.GET_PICTURE_INFORMATION.equals(url.split("/")[3])) {
-                                        pictureList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        pictureList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x010, 100);
                                     } else if (Contacts.GET_PAINT_INFORMATION.equals(url.split("/")[3])) {
-                                        paintList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        paintList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x011, 100);
                                     } else if (Contacts.GET_ENLIGHTEN_INFORMATION.equals(url.split("/")[3])) {
-                                        enlightenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        enlightenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x012, 100);
                                     } else if (Contacts.GET_PRESCHOOL_INFORMATION.equals(url.split("/")[3])) {
-                                        preschoolList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        preschoolList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x013, 100);
                                     } else if (Contacts.GET_MIDDLE_INFORMATION.equals(url.split("/")[3])) {
-                                        middleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        middleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x014, 100);
                                     } else if (Contacts.GET_PROGRAMME_INFORMATION.equals(url.split("/")[3])) {
-                                        programmeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        programmeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x015, 100);
                                     }
                                 }
@@ -198,6 +211,54 @@ public class EducationFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        } else {
+            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
+
+//        classroomRecyclerView.setAdapter(classroomRecyclerViewAdapter);
+//        teacherRecyclerView.setAdapter(teacherRecyclerViewAdapter);
+//        enlightenRecyclerView.setAdapter(enlightenRecyclerViewAdapter);
+//        programmeRecyclerView.setAdapter(programmeRecyclerViewAdapter);
+//        textualRecyclerView.setAdapter(textualRecyclerViewAdapter);
+//        englishRecyclerView.setAdapter(englishRecyclerViewAdapter);
+//        translateRecyclerView.setAdapter(translateRecyclerViewAdapter);
+//        childrenRecyclerView.setAdapter(childrenRecyclerViewAdapter);
+//        pictureRecyclerView.setAdapter(pictureRecyclerViewAdapter);
+//        paintRecyclerView.setAdapter(paintRecyclerViewAdapter);
+//        preschoolRecyclerView.setAdapter(preschoolRecyclerViewAdapter);
+//        middleRecyclerView.setAdapter(middleRecyclerViewAdapter);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -1203,7 +1264,7 @@ public class EducationFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象

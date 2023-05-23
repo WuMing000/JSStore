@@ -6,12 +6,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:paddingBottom="30dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recommend_recycler"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="250dp" />
 
         <LinearLayout
             android:id="@+id/ll_point"

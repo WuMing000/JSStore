@@ -4,11 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -23,6 +30,8 @@ import com.js.appstore.fragment.RecreationFragment;
 import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,17 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
 
+    private EditText etSource;
+
 //    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomUtil.hideBottomUIMenu(this);
+        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_main);
 //        intent = new Intent(this, MyService.class);
 //        startService(intent);
         viewPager = findViewById(R.id.main_view_pager);
         tabLayout = findViewById(R.id.main_tablayout);
+        etSource = findViewById(R.id.et_source);
         fragmentList = new ArrayList<>();
         topTitle = new ArrayList<>();
         fragmentList.add(new RecommendFragment());
@@ -71,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 if (view instanceof TextView) {
                     // 改变 tab 选择状态下的字体大小
                     ((TextView) view).setTextSize(26);
-                    ((TextView) view).setTextColor(getResources().getColor(R.color.white));
+                    ((TextView) view).setTextColor(getResources().getColor(R.color.black));
                 }
             }
 
@@ -81,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 if (view instanceof TextView) {
                     // 改变 tab 选择状态下的字体大小
                     ((TextView) view).setTextSize(20);
-                    ((TextView) view).setTextColor(getResources().getColor(R.color.black));
+                    ((TextView) view).setTextColor(getResources().getColor(R.color.gray));
                 }
             }
 
@@ -101,6 +114,34 @@ public class MainActivity extends AppCompatActivity {
         }
         setDefaultSelected(0);
         viewPager.setOffscreenPageLimit(5);
+
+        // 浏览器搜索跳转
+        etSource.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    String sourceText = etSource.getText().toString().trim();
+                    Uri uri = null;
+                    try {
+                        uri = Uri.parse("http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(sourceText, "UTF-8"));
+                        Log.d(TAG, "source content is" + sourceText);
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+                    final Intent intent = new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int position = extras.getInt("position");
+            setDefaultSelected(position);
+        }
     }
 
     private void setDefaultSelected(int position) {
@@ -109,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (view instanceof TextView) {
             // 改变 tab 选择状态下的字体大小
             ((TextView) view).setTextSize(26);
-            ((TextView) view).setTextColor(getResources().getColor(R.color.white));
+            ((TextView) view).setTextColor(getResources().getColor(R.color.black));
         }
         viewPager.setCurrentItem(position);
     }
@@ -127,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         topTitle.add("教育");
         topTitle.add("游戏");
         View view = LayoutInflater.from(this).inflate(R.layout.tab_text_view, null);
-        TextView textView = (TextView) view.findViewById(R.id.tab_item_textview);
+        TextView textView = view.findViewById(R.id.tab_item_textview);
         textView.setText(topTitle.get(currentPosition));
         return view;
     }
@@ -136,5 +177,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 //        stopService(intent);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+
+            // 获取当前聚焦
+            View v = getCurrentFocus();
+
+            if (CustomUtil.isShouldHideInput(v, ev)) {
+                //点击editText控件外部
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    assert v != null;
+                    //软键盘工具类关闭软键盘
+                    CustomUtil.hideKeyBoard(MainActivity.this);
+                    //使输入框失去焦点
+                    v.clearFocus();
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        return getWindow().superDispatchTouchEvent(ev) || onTouchEvent(ev);
     }
 }

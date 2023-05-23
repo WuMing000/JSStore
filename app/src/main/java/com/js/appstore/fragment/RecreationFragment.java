@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,25 +104,32 @@ public class RecreationFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_VIDEO_INFORMATION.equals(url.split("/")[3])) {
-                                        videoList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        videoList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_CARTOON_INFORMATION.equals(url.split("/")[3])) {
-                                        cartoonList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        cartoonList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_MESSAGE_INFORMATION.equals(url.split("/")[3])) {
-                                        messageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        messageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_HOTSPOT_INFORMATION.equals(url.split("/")[3])) {
-                                        hotspotList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        hotspotList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     } else if (Contacts.GET_REEL_INFORMATION.equals(url.split("/")[3])) {
-                                        reelList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        reelList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x008, 100);
                                     } else if (Contacts.GET_BROADCAST_INFORMATION.equals(url.split("/")[3])) {
-                                        broadcastList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        broadcastList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x009, 100);
                                     } else if (Contacts.GET_LIVE_INFORMATION.equals(url.split("/")[3])) {
-                                        liveList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        liveList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x010, 100);
                                     }
                                 }
@@ -158,6 +166,38 @@ public class RecreationFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        } else {
+            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
+//        videoRecyclerView.setAdapter(videoRecyclerViewAdapter);
+//        cartoonRecyclerView.setAdapter(cartoonRecyclerViewAdapter);
+//        hotspotRecyclerView.setAdapter(hotspotRecyclerViewAdapter);
+//        liveRecyclerView.setAdapter(liveRecyclerViewAdapter);
+//        messageRecyclerView.setAdapter(messageRecyclerViewAdapter);
+//        reelRecyclerView.setAdapter(reelRecyclerViewAdapter);
+//        broadcastRecyclerView.setAdapter(broadcastRecyclerViewAdapter);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -783,7 +823,7 @@ public class RecreationFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象

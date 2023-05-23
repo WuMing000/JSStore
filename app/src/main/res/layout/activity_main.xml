@@ -6,45 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
     android:orientation="vertical"
-    android:background="#DCE2F1">
+    android:background="@color/light_white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#747679">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tablayout"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            app:tabIndicatorColor="@android:color/holo_orange_dark"
-            android:background="#747679"
-            app:tabMode="auto"
+            android:layout_width="wrap_content"
+            app:tabIndicatorColor="@android:color/holo_blue_light"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="3dp"
+            android:background="@color/light_white"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp" />
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"/>
 
-<!--        <View-->
-<!--            android:layout_width="1dp"-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp">
+
+            <EditText
+                android:id="@+id/et_source"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:background="@drawable/selector_et_bg"
+                android:drawableLeft="@drawable/bg_home_et_source"
+                android:padding="8dp"
+                android:hint="你要搜索什么应用呢"
+                android:imeOptions="actionSearch|flagNoExtractUi"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/gray"
+                android:drawablePadding="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/black"/>-->
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="搜索"
-            android:textColor="@color/black"
-            android:paddingTop="30dp"
-            android:textSize="20sp"
-            android:background="#00000000"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="清理"
-            android:textColor="@color/black"
-            android:paddingTop="30dp"
-            android:textSize="20sp"
-            android:background="#00000000"/>
+<!--            android:text="清理"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:paddingTop="30dp"-->
+<!--            android:textSize="20sp"-->
+<!--            android:background="#00000000"/>-->
 
     </LinearLayout>
 

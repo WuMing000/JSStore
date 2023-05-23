@@ -6,6 +6,7 @@ public class Contacts {
     public static final String SERVER_PORT = "8086";
 
     //RecommendFragment
+    public static final String GET_BANNER_INFORMATION = "getBannerInformation";
     public static final String GET_USER_INFORMATION = "getUserInformation";
     public static final String GET_CHOICE_INFORMATION = "getChoiceInformation";
     public static final String GET_WATCH_INFORMATION = "getWatchInformation";

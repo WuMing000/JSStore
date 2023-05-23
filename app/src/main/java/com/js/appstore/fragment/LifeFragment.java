@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,28 +106,36 @@ public class LifeFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_FOOD_INFORMATION.equals(url.split("/")[3])) {
-                                        foodList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        foodList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_SHOPPING_INFORMATION.equals(url.split("/")[3])) {
-                                        shoppingList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        shoppingList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_SERVE_INFORMATION.equals(url.split("/")[3])) {
-                                        serveList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        serveList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_PRACTICAL_INFORMATION.equals(url.split("/")[3])) {
-                                        practicalList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        practicalList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     } else if (Contacts.GET_SPORT_INFORMATION.equals(url.split("/")[3])) {
-                                        sportList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        sportList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x008, 100);
                                     } else if (Contacts.GET_HEALTH_INFORMATION.equals(url.split("/")[3])) {
-                                        healthList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        healthList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x009, 100);
                                     } else if (Contacts.GET_INVESTMENT_INFORMATION.equals(url.split("/")[3])) {
-                                        investmentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        investmentList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x010, 100);
                                     } else if (Contacts.GET_BRING_INFORMATION.equals(url.split("/")[3])) {
-                                        bringList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        bringList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x011, 100);
                                     }
                                 }
@@ -166,6 +175,41 @@ public class LifeFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        } else {
+            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
+//        investmentRecyclerView.setAdapter(investmentRecyclerViewAdapter);
+//        foodRecyclerView.setAdapter(foodRecyclerViewAdapter);
+//        shoppingRecyclerView.setAdapter(shoppingRecyclerViewAdapter);
+//        serveRecyclerView.setAdapter(serveRecyclerViewAdapter);
+//        practicalRecyclerView.setAdapter(practicalRecyclerViewAdapter);
+//        sportRecyclerView.setAdapter(sportRecyclerViewAdapter);
+//        healthRecyclerView.setAdapter(healthRecyclerViewAdapter);
+//        bringRecyclerView.setAdapter(bringRecyclerViewAdapter);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -867,7 +911,7 @@ public class LifeFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象

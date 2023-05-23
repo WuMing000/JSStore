@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,16 +98,20 @@ public class GameFragment extends Fragment {
                                         appState = "安装";
                                     }
                                     if (Contacts.GET_PLAY_INFORMATION.equals(url.split("/")[3])) {
-                                        playList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        playList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x004, 100);
                                     } else if (Contacts.GET_CHESS_INFORMATION.equals(url.split("/")[3])) {
-                                        chessList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        chessList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x005, 100);
                                     } else if (Contacts.GET_PUZZLE_INFORMATION.equals(url.split("/")[3])) {
-                                        puzzleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        puzzleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x006, 100);
                                     } else if (Contacts.GET_CARD_INFORMATION.equals(url.split("/")[3])) {
-                                        cardList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                        cardList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                         handler.sendEmptyMessageAtTime(0x007, 100);
                                     }
                                 }
@@ -134,6 +139,29 @@ public class GameFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        } else {
+            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
+//        playfulRecyclerView.setAdapter(playfulRecyclerViewAdapter);
+//        cardRecyclerView.setAdapter(cardRecyclerViewAdapter);
+//        chessRecyclerView.setAdapter(chessRecyclerViewAdapter);
+//        puzzleRecyclerView.setAdapter(puzzleRecyclerViewAdapter);
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -531,7 +559,7 @@ public class GameFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象

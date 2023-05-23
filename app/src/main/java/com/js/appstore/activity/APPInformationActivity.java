@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +27,8 @@ import java.io.File;
 public class APPInformationActivity extends BaseActivity {
     private static final String TAG = "APPInformationActivity===============>";
 
-    private Button btnBack, btnState;
+    LinearLayout llBack;
+    private Button btnState;
     private ImageView ivIcon;
     private TextView tvAppName, tvAppApplication, tvIntroduce;
 
@@ -38,9 +40,10 @@ public class APPInformationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomUtil.hideBottomUIMenu(this);
+        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_appinformation);
 
-        btnBack = findViewById(R.id.btn_back);
+        llBack = findViewById(R.id.ll_back);
         btnState = findViewById(R.id.btn_state);
         ivIcon = findViewById(R.id.iv_icon);
         tvAppName = findViewById(R.id.tv_app_name);
@@ -95,11 +98,12 @@ public class APPInformationActivity extends BaseActivity {
         tvAppName.setText(appLocalBean.getAppName());
         tvAppApplication.setText(appLocalBean.getAppInformation());
         tvIntroduce.setText(appLocalBean.getAppIntroduce());
+        String appPicture = appLocalBean.getAppPicture();
     }
 
     private void initOnClickListener() {
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        llBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

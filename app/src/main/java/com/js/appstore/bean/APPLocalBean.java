@@ -20,9 +20,13 @@ public class APPLocalBean implements Serializable, Parcelable {
     private String appInformation;
     private String appDownLoadURL;
     private String appIntroduce;
+    private String appPicture;
     private String appState;
 
-    public APPLocalBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce, String appState) {
+    public APPLocalBean() {
+    }
+
+    public APPLocalBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce, String appPicture, String appState) {
         this.appId = appId;
         this.appIcon = appIcon;
         this.appName = appName;
@@ -30,6 +34,7 @@ public class APPLocalBean implements Serializable, Parcelable {
         this.appInformation = appInformation;
         this.appDownLoadURL = appDownLoadURL;
         this.appIntroduce = appIntroduce;
+        this.appPicture = appPicture;
         this.appState = appState;
     }
 
@@ -41,6 +46,7 @@ public class APPLocalBean implements Serializable, Parcelable {
         appInformation = in.readString();
         appDownLoadURL = in.readString();
         appIntroduce = in.readString();
+        appPicture = in.readString();
         appState = in.readString();
     }
 
@@ -55,6 +61,14 @@ public class APPLocalBean implements Serializable, Parcelable {
             return new APPLocalBean[size];
         }
     };
+
+    public String getAppPicture() {
+        return appPicture;
+    }
+
+    public void setAppPicture(String appPicture) {
+        this.appPicture = appPicture;
+    }
 
     public String getAppIntroduce() {
         return appIntroduce;
@@ -130,6 +144,7 @@ public class APPLocalBean implements Serializable, Parcelable {
                 ", appInformation='" + appInformation + '\'' +
                 ", appDownLoadURL='" + appDownLoadURL + '\'' +
                 ", appIntroduce='" + appIntroduce + '\'' +
+                ", appPicture='" + appPicture + '\'' +
                 ", appState='" + appState + '\'' +
                 '}';
     }
@@ -148,6 +163,7 @@ public class APPLocalBean implements Serializable, Parcelable {
         dest.writeString(appInformation);
         dest.writeString(appDownLoadURL);
         dest.writeString(appIntroduce);
+        dest.writeString(appPicture);
         dest.writeString(appState);
     }
 }

@@ -64,6 +64,7 @@ public class RecommendFragment extends Fragment {
 
     private TopRecyclerViewAdapter bannerAdapter;
 
+    private List<APPLocalBean> bannerList;
     private List<APPLocalBean> userList;
     private List<APPLocalBean> choiceList;
     private List<APPLocalBean> watchList;
@@ -120,9 +121,9 @@ public class RecommendFragment extends Fragment {
                     bannerOnScrollListener = new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                            if (newState == RecyclerView.SCROLL_STATE_IDLE && userList.size() != 0) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE && bannerList.size() != 0) {
                                 llPoint.getChildAt(i).setEnabled(false);
-                                i = linearLayoutManager.findFirstVisibleItemPosition() % userList.size();
+                                i = linearLayoutManager.findFirstVisibleItemPosition() % bannerList.size();
                                 //得到指示器红点的位置
                                 llPoint.getChildAt(i).setEnabled(true);
                             }
@@ -156,34 +157,48 @@ public class RecommendFragment extends Fragment {
                                 } else if (saveFile.exists()) {
                                     appState = "安装";
                                 }
-                                if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
-                                    userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
+                                    bannerList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                    handler.sendEmptyMessageAtTime(0x016, 100);
+                                } else if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
+                                    userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x007, 100);
                                 } else if (Contacts.GET_CHOICE_INFORMATION.equals(url.split("/")[3])) {
-                                    choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x008, 100);
                                 } else if (Contacts.GET_WATCH_INFORMATION.equals(url.split("/")[3])) {
-                                    watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x009, 100);
                                 } else if (Contacts.GET_BARRAGE_INFORMATION.equals(url.split("/")[3])) {
-                                    barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x010, 100);
                                 } else if (Contacts.GET_RELAX_INFORMATION.equals(url.split("/")[3])) {
-                                    relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x011, 100);
                                 } else if (Contacts.GET_WORKPIECE_INFORMATION.equals(url.split("/")[3])) {
-                                    workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x012, 100);
                                 } else if (Contacts.GET_NEWS_INFORMATION.equals(url.split("/")[3])) {
-                                    newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x013, 100);
                                 } else if (Contacts.GET_READ_INFORMATION.equals(url.split("/")[3])) {
-                                    readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(), appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appState));
+                                    readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                            appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
                                     handler.sendEmptyMessageAtTime(0x014, 100);
                                 }
                             }
+                            if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
+                                handler.sendEmptyMessageAtTime(0x003, 100);
+                            }
 //                            handler.sendEmptyMessageAtTime(0x002, 100);
-                            handler.sendEmptyMessageAtTime(0x003, 100);
                         }
                     }.start();
                     break;
@@ -191,7 +206,6 @@ public class RecommendFragment extends Fragment {
 //                    downloadProgress();
                     break;
                 case 0x007 :
-                    bannerAdapter.notifyDataSetChanged();
                     userRecyclerViewAdapter.notifyDataSetChanged();
                     break;
                 case 0x008 :
@@ -218,6 +232,9 @@ public class RecommendFragment extends Fragment {
                 case 0x015 :
                     Toast.makeText(MyApplication.getInstance().getContext(), "服务器异常，请求数据失败", Toast.LENGTH_SHORT).show();
                     break;
+                case 0x016 :
+                    bannerAdapter.notifyDataSetChanged();
+                    break;
                 default:
                     break;
             }
@@ -233,10 +250,46 @@ public class RecommendFragment extends Fragment {
 
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = mConfiguration.orientation; //获取屏幕方向
+        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        } else {
+            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
+//        userRecyclerView.setAdapter(userRecyclerViewAdapter);
+//        choiceRecyclerView.setAdapter(choiceRecyclerViewAdapter);
+//        watchRecyclerview.setAdapter(watchRecyclerViewAdapter);
+//        barrageRecyclerView.setAdapter(barrageRecyclerViewAdapter);
+//        relaxRecyclerView.setAdapter(relaxRecyclerViewAdapter);
+//        workpieceRecyclerView.setAdapter(workpieceRecyclerViewAdapter);
+//        newsRecyclerView.setAdapter(newsRecyclerViewAdapter);
+//        readRecyclerView.setAdapter(readRecyclerViewAdapter);
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.e(TAG, "saveInstanceState");
         outState.putParcelableArrayList("userList", (ArrayList<? extends Parcelable>) userList);
+        outState.putParcelableArrayList("bannerList", (ArrayList<? extends Parcelable>) bannerList);
         outState.putParcelableArrayList("choiceList", (ArrayList<? extends Parcelable>) choiceList);
         outState.putParcelableArrayList("watchList", (ArrayList<? extends Parcelable>) watchList);
         outState.putParcelableArrayList("barrageList", (ArrayList<? extends Parcelable>) barrageList);
@@ -251,6 +304,7 @@ public class RecommendFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e(TAG, "onCreateView");
         userList = new ArrayList<>();
+        bannerList = new ArrayList<>();
         choiceList = new ArrayList<>();
         watchList = new ArrayList<>();
         barrageList = new ArrayList<>();
@@ -272,7 +326,7 @@ public class RecommendFragment extends Fragment {
         readRecyclerView = inflate.findViewById(R.id.read_recycler_view);
         llPoint = inflate.findViewById(R.id.ll_point);
 
-        bannerAdapter = new TopRecyclerViewAdapter(getContext(), userList);
+        bannerAdapter = new TopRecyclerViewAdapter(getContext(), bannerList);
         userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userList);
         choiceRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), choiceList);
         watchRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), watchList);
@@ -320,6 +374,9 @@ public class RecommendFragment extends Fragment {
         readRecyclerView.setAdapter(readRecyclerViewAdapter);
 
         if (savedInstanceState != null) {
+            for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("bannerList")) {
+                bannerList.add((APPLocalBean) parcelable);
+            }
             for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("userList")) {
                 userList.add((APPLocalBean) parcelable);
             }
@@ -364,132 +421,6 @@ public class RecommendFragment extends Fragment {
         super.onResume();
         Log.e(TAG, "onResume");
 
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
-//                for (APPLocalBean appLocalBean : userList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x007, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x007, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x007, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : choiceList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x008, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x008, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x008, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : watchList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x009, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x009, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x009, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : barrageList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x010, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x010, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x010, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : relaxList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x011, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x011, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x011, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : workpieceList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x012, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x012, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x012, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : newsList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x013, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x013, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x013, 100);
-//                    }
-//                }
-//
-//                for (APPLocalBean appLocalBean : readList) {
-//                    boolean appExists = CustomUtil.isAppExists(appLocalBean.getAppPackage());
-//                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-//                    if (appExists) {
-//                        appLocalBean.setAppState("打开");
-//                        handler.sendEmptyMessageAtTime(0x014, 100);
-//                    } else if (saveFile.exists()) {
-//                        appLocalBean.setAppState("安装");
-//                        handler.sendEmptyMessageAtTime(0x014, 100);
-//                    } else {
-//                        appLocalBean.setAppState("下载");
-//                        handler.sendEmptyMessageAtTime(0x014, 100);
-//                    }
-//                }
-//            }
-//        }.start();
-
         receiver = new DownloadReceiver();
         IntentFilter intentFilter = new IntentFilter("js.download.progress");
         intentFilter.addAction("js.app.download.completed");
@@ -521,6 +452,7 @@ public class RecommendFragment extends Fragment {
     }
 
     private void initAPPData() {
+        getAPPData(Contacts.SERVER_URL + ":" + Contacts.SERVER_PORT + "/" + Contacts.GET_BANNER_INFORMATION);
         getAPPData(Contacts.SERVER_URL + ":" + Contacts.SERVER_PORT + "/" + Contacts.GET_USER_INFORMATION);
         getAPPData(Contacts.SERVER_URL + ":" + Contacts.SERVER_PORT + "/" + Contacts.GET_CHOICE_INFORMATION);
         getAPPData(Contacts.SERVER_URL + ":" + Contacts.SERVER_PORT + "/" + Contacts.GET_WATCH_INFORMATION);
@@ -535,9 +467,9 @@ public class RecommendFragment extends Fragment {
         bannerAdapter.setOnItemClickListener(new TopRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void OnClick(int position) {
-                Log.e(TAG, userList.get(position).toString());
+                Log.e(TAG, bannerList.get(position).toString());
                 Intent intent = new Intent(getContext(), APPInformationActivity.class);
-                intent.putExtra("appHomeBean", (Serializable) userList.get(position));
+                intent.putExtra("appHomeBean", (Serializable) bannerList.get(position));
                 startActivity(intent);
             }
         });
@@ -978,7 +910,7 @@ public class RecommendFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象
@@ -1023,7 +955,7 @@ public class RecommendFragment extends Fragment {
                 llPoint.removeAllViews();
             }
             pointViews.clear();
-            for (int i = 0; i < userList.size(); i++) {
+            for (int i = 0; i < bannerList.size(); i++) {
                 //创建底部指示器(小圆点)
                 view = new View(getContext());
                 view.setBackgroundResource(R.drawable.background_point);

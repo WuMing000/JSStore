@@ -24,7 +24,13 @@ public class APPServerBean implements Serializable {
     @SerializedName("appIntroduce")
     private String appIntroduce;
 
-    public APPServerBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce) {
+    @SerializedName("appPicture")
+    private String appPicture;
+
+    public APPServerBean() {
+    }
+
+    public APPServerBean(int appId, String appIcon, String appName, String appPackage, String appInformation, String appDownLoadURL, String appIntroduce, String appPicture) {
         this.appId = appId;
         this.appIcon = appIcon;
         this.appName = appName;
@@ -32,6 +38,15 @@ public class APPServerBean implements Serializable {
         this.appInformation = appInformation;
         this.appDownLoadURL = appDownLoadURL;
         this.appIntroduce = appIntroduce;
+        this.appPicture = appPicture;
+    }
+
+    public String getAppPicture() {
+        return appPicture;
+    }
+
+    public void setAppPicture(String appPicture) {
+        this.appPicture = appPicture;
     }
 
     public String getAppIntroduce() {

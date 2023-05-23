@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.js.appstore.R;
@@ -39,9 +40,15 @@ public class TopRecyclerViewAdapter extends RecyclerView.Adapter<TopRecyclerView
     @Override
     public void onBindViewHolder(@NonNull TopRecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (mList.size() != 0) {
-            String i = mList.get(position % mList.size()).getAppIcon();
+            String i = mList.get(position % mList.size()).getAppPicture();
 //            holder.ivRecommend.setImageResource(i);
             Glide.with(mContext).load(i).into(holder.ivRecommend);
+            String iconId = mList.get(position % mList.size()).getAppIcon();
+            String appName = mList.get(position % mList.size()).getAppName();
+            String appInformation = mList.get(position % mList.size()).getAppInformation();
+            Glide.with(mContext).load(iconId).into(holder.ivIcon);
+            holder.tvAppName.setText(appName);
+            holder.tvAppInformation.setText(appInformation);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +66,15 @@ public class TopRecyclerViewAdapter extends RecyclerView.Adapter<TopRecyclerView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivRecommend;
+        private ImageView ivIcon;
+        private TextView tvAppName;
+        private TextView tvAppInformation;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ivRecommend = itemView.findViewById(R.id.iv_recommend);
+            ivIcon = itemView.findViewById(R.id.iv_icon);
+            tvAppName = itemView.findViewById(R.id.tv_app_name);
+            tvAppInformation = itemView.findViewById(R.id.tv_app_information);
         }
     }
 
