@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -180,36 +181,42 @@ public class LifeFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-//        investmentRecyclerView.setAdapter(investmentRecyclerViewAdapter);
-//        foodRecyclerView.setAdapter(foodRecyclerViewAdapter);
-//        shoppingRecyclerView.setAdapter(shoppingRecyclerViewAdapter);
-//        serveRecyclerView.setAdapter(serveRecyclerViewAdapter);
-//        practicalRecyclerView.setAdapter(practicalRecyclerViewAdapter);
-//        sportRecyclerView.setAdapter(sportRecyclerViewAdapter);
-//        healthRecyclerView.setAdapter(healthRecyclerViewAdapter);
-//        bringRecyclerView.setAdapter(bringRecyclerViewAdapter);
     }
 
     @Override
@@ -246,9 +253,7 @@ public class LifeFragment extends Fragment {
         practicalRecyclerView = inflate.findViewById(R.id.practical_recycler_view);
         sportRecyclerView = inflate.findViewById(R.id.sport_recycler_view);
         healthRecyclerView = inflate.findViewById(R.id.health_recycler_view);
-
         investmentRecyclerView = inflate.findViewById(R.id.investment_recycler_view);
-        investmentRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         bringRecyclerView = inflate.findViewById(R.id.bring_recycler_view);
 
@@ -262,26 +267,43 @@ public class LifeFragment extends Fragment {
         healthRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), healthList);
         bringRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), bringList);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                investmentRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                investmentRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            investmentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            foodRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            shoppingRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            serveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            practicalRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            sportRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            healthRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            bringRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         investmentRecyclerView.setAdapter(investmentRecyclerViewAdapter);
@@ -963,11 +985,19 @@ public class LifeFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 }

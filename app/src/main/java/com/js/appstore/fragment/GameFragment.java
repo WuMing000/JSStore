@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,24 +145,30 @@ public class GameFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-//        playfulRecyclerView.setAdapter(playfulRecyclerViewAdapter);
-//        cardRecyclerView.setAdapter(cardRecyclerViewAdapter);
-//        chessRecyclerView.setAdapter(chessRecyclerViewAdapter);
-//        puzzleRecyclerView.setAdapter(puzzleRecyclerViewAdapter);
     }
 
     @Override
@@ -185,13 +192,9 @@ public class GameFragment extends Fragment {
         cardList = new ArrayList<>();
 
         playfulRecyclerView = inflate.findViewById(R.id.playful_recycler_view);
-        playfulRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         chessRecyclerView = inflate.findViewById(R.id.chess_recycler_view);
         puzzleRecyclerView = inflate.findViewById(R.id.puzzle_recycler_view);
-
         cardRecyclerView = inflate.findViewById(R.id.card_recycler_view);
-        cardRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         playfulRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), playList);
         cardRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), cardList);
@@ -199,18 +202,33 @@ public class GameFragment extends Fragment {
         puzzleRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), puzzleList);
         chessRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), chessList);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                playfulRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                cardRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                playfulRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                cardRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            playfulRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            cardRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            chessRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            puzzleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         playfulRecyclerView.setAdapter(playfulRecyclerViewAdapter);
@@ -612,11 +630,19 @@ public class GameFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 

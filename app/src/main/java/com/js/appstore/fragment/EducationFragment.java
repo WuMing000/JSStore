@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -216,49 +217,54 @@ public class EducationFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-
-//        classroomRecyclerView.setAdapter(classroomRecyclerViewAdapter);
-//        teacherRecyclerView.setAdapter(teacherRecyclerViewAdapter);
-//        enlightenRecyclerView.setAdapter(enlightenRecyclerViewAdapter);
-//        programmeRecyclerView.setAdapter(programmeRecyclerViewAdapter);
-//        textualRecyclerView.setAdapter(textualRecyclerViewAdapter);
-//        englishRecyclerView.setAdapter(englishRecyclerViewAdapter);
-//        translateRecyclerView.setAdapter(translateRecyclerViewAdapter);
-//        childrenRecyclerView.setAdapter(childrenRecyclerViewAdapter);
-//        pictureRecyclerView.setAdapter(pictureRecyclerViewAdapter);
-//        paintRecyclerView.setAdapter(paintRecyclerViewAdapter);
-//        preschoolRecyclerView.setAdapter(preschoolRecyclerViewAdapter);
-//        middleRecyclerView.setAdapter(middleRecyclerViewAdapter);
     }
 
     @Override
@@ -298,16 +304,9 @@ public class EducationFragment extends Fragment {
         programmeList = new ArrayList<>();
 
         classroomRecyclerView = inflate.findViewById(R.id.classroom_recycler_view);
-        classroomRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         teacherRecyclerView = inflate.findViewById(R.id.teacher_recycler_view);
-        teacherRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         enlightenRecyclerView = inflate.findViewById(R.id.enlighten_recycler_view);
-        enlightenRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         programmeRecyclerView = inflate.findViewById(R.id.programme_recycler_view);
-        programmeRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         textualRecyclerView = inflate.findViewById(R.id.textual_recycler_view);
         englishRecyclerView = inflate.findViewById(R.id.english_recycler_view);
@@ -332,34 +331,61 @@ public class EducationFragment extends Fragment {
         preschoolRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), preschoolList);
         middleRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), middleList);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                classroomRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                teacherRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                enlightenRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                programmeRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                classroomRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                teacherRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                enlightenRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                programmeRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            classroomRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            teacherRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            enlightenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            programmeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            textualRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            englishRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            translateRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            childrenRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            pictureRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            paintRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            preschoolRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            middleRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
 
@@ -1147,11 +1173,19 @@ public class EducationFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 

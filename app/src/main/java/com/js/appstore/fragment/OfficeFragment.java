@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -162,30 +163,36 @@ public class OfficeFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-//        officeRecyclerView.setAdapter(officeRecyclerViewAdapter);
-//        thoughtRecyclerView.setAdapter(thoughtRecyclerViewAdapter);
-//        networkDiskRecyclerView.setAdapter(networkDiskRecyclerViewAdapter);
-//        instrumentRecyclerView.setAdapter(instrumentRecyclerViewAdapter);
-//        documentRecyclerView.setAdapter(documentRecyclerViewAdapter);
-//        communicationRecyclerView.setAdapter(communicationRecyclerViewAdapter);
     }
 
     @Override
@@ -213,18 +220,14 @@ public class OfficeFragment extends Fragment {
         networkDiskList = new ArrayList<>();
 
         officeRecyclerView = inflate.findViewById(R.id.office_recycler_view);
-        officeRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         documentRecyclerView = inflate.findViewById(R.id.document_recycler_view);
         communicationRecyclerView = inflate.findViewById(R.id.communication_recycler_view);
 
         thoughtRecyclerView = inflate.findViewById(R.id.thought_recycler_view);
-        thoughtRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         instrumentRecyclerView = inflate.findViewById(R.id.instrument_recycler_view);
 
         networkDiskRecyclerView = inflate.findViewById(R.id.network_disk_recycler_view);
-        networkDiskRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         officeRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), officeList);
         thoughtRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), thoughtList);
@@ -234,22 +237,41 @@ public class OfficeFragment extends Fragment {
         communicationRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), communicationList);
         instrumentRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), instrumentList);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                officeRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                thoughtRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                networkDiskRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                officeRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                thoughtRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                networkDiskRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            officeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            thoughtRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            networkDiskRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            instrumentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            documentRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            communicationRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         officeRecyclerView.setAdapter(officeRecyclerViewAdapter);
@@ -791,11 +813,19 @@ public class OfficeFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 }

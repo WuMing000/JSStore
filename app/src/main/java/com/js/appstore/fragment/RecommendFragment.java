@@ -12,10 +12,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -253,36 +255,42 @@ public class RecommendFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-//        userRecyclerView.setAdapter(userRecyclerViewAdapter);
-//        choiceRecyclerView.setAdapter(choiceRecyclerViewAdapter);
-//        watchRecyclerview.setAdapter(watchRecyclerViewAdapter);
-//        barrageRecyclerView.setAdapter(barrageRecyclerViewAdapter);
-//        relaxRecyclerView.setAdapter(relaxRecyclerViewAdapter);
-//        workpieceRecyclerView.setAdapter(workpieceRecyclerViewAdapter);
-//        newsRecyclerView.setAdapter(newsRecyclerViewAdapter);
-//        readRecyclerView.setAdapter(readRecyclerViewAdapter);
     }
 
     @Override
@@ -319,14 +327,12 @@ public class RecommendFragment extends Fragment {
         bannerRecyclerView = inflate.findViewById(R.id.recommend_recycler);
 
         userRecyclerView = inflate.findViewById(R.id.user_recycler_view);
-        userRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         choiceRecyclerView = inflate.findViewById(R.id.choice_recycler_view);
         watchRecyclerview = inflate.findViewById(R.id.watch_recycler_view);
         barrageRecyclerView = inflate.findViewById(R.id.barrage_recycler_view);
 
         relaxRecyclerView = inflate.findViewById(R.id.relax_recycler_view);
-        relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         workpieceRecyclerView = inflate.findViewById(R.id.workpiece_recycler_view);
         newsRecyclerView = inflate.findViewById(R.id.news_recycler_view);
@@ -349,26 +355,45 @@ public class RecommendFragment extends Fragment {
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(bannerRecyclerView);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                userRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                userRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            watchRecyclerview.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            barrageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            relaxRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         userRecyclerView.setAdapter(userRecyclerViewAdapter);
@@ -994,11 +1019,19 @@ public class RecommendFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 

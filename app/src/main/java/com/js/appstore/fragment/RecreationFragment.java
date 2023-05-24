@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -171,33 +172,39 @@ public class RecreationFragment extends Fragment {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+            } else {
+                videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            }
         } else {
-            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
-
-//        videoRecyclerView.setAdapter(videoRecyclerViewAdapter);
-//        cartoonRecyclerView.setAdapter(cartoonRecyclerViewAdapter);
-//        hotspotRecyclerView.setAdapter(hotspotRecyclerViewAdapter);
-//        liveRecyclerView.setAdapter(liveRecyclerViewAdapter);
-//        messageRecyclerView.setAdapter(messageRecyclerViewAdapter);
-//        reelRecyclerView.setAdapter(reelRecyclerViewAdapter);
-//        broadcastRecyclerView.setAdapter(broadcastRecyclerViewAdapter);
     }
 
     @Override
@@ -227,21 +234,16 @@ public class RecreationFragment extends Fragment {
         liveList = new ArrayList<>();
 
         videoRecyclerView = inflate.findViewById(R.id.video_recycler_view);
-        videoRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         cartoonRecyclerView = inflate.findViewById(R.id.cartoon_recycler_view);
-        cartoonRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
-
         messageRecyclerView = inflate.findViewById(R.id.message_recycler_view);
-
         hotspotRecyclerView = inflate.findViewById(R.id.hotspot_recycler_view);
-        hotspotRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
 
         reelRecyclerView = inflate.findViewById(R.id.reel_recycler_view);
         broadcastRecyclerView = inflate.findViewById(R.id.broadcast_recycler_view);
 
         liveRecyclerView = inflate.findViewById(R.id.live_recycler_view);
-        liveRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
 
         videoRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), videoList);
         cartoonRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), cartoonList);
@@ -252,24 +254,46 @@ public class RecreationFragment extends Fragment {
         reelRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), reelList);
         broadcastRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), broadcastList);
 
-        Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
-        int ori = mConfiguration.orientation; //获取屏幕方向
-        if (ori == Configuration.ORIENTATION_LANDSCAPE) {
-            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+        DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        int widthPixels = displayMetrics.widthPixels;
+        int heightPixels = displayMetrics.heightPixels;
+        if (widthPixels == 1080 || heightPixels == 1080) {
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
+                videoRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                cartoonRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                hotspotRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                liveRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            } else {
+                videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                videoRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                cartoonRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                hotspotRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+                liveRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            }
         } else {
-            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            videoRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            cartoonRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            hotspotRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            liveRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+            messageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            reelRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            broadcastRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
         videoRecyclerView.setAdapter(videoRecyclerViewAdapter);
@@ -867,6 +891,7 @@ public class RecreationFragment extends Fragment {
         }.start();
     }
 
+
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private int space;
 
@@ -881,11 +906,19 @@ public class RecreationFragment extends Fragment {
 //            outRect.right = space;
 //            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) % 3 == 1) {
-                outRect.left = space;
-                outRect.right = space;
+            Configuration mConfiguration = MyApplication.getInstance().getContext().getResources().getConfiguration(); //获取设置的配置信息
+            int ori = mConfiguration.orientation; //获取屏幕方向
+            if (ori == Configuration.ORIENTATION_LANDSCAPE) {
+                if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                    outRect.left = space;
+                    outRect.right = space;
+                }
+            } else {
+                if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                    outRect.left = space;
+                }
             }
+            // Add top margin only for the first item to avoid double space between items
         }
     }
 
