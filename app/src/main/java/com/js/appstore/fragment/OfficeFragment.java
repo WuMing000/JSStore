@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -212,11 +213,18 @@ public class OfficeFragment extends Fragment {
         networkDiskList = new ArrayList<>();
 
         officeRecyclerView = inflate.findViewById(R.id.office_recycler_view);
+        officeRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         documentRecyclerView = inflate.findViewById(R.id.document_recycler_view);
         communicationRecyclerView = inflate.findViewById(R.id.communication_recycler_view);
+
         thoughtRecyclerView = inflate.findViewById(R.id.thought_recycler_view);
+        thoughtRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         instrumentRecyclerView = inflate.findViewById(R.id.instrument_recycler_view);
+
         networkDiskRecyclerView = inflate.findViewById(R.id.network_disk_recycler_view);
+        networkDiskRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         officeRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), officeList);
         thoughtRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), thoughtList);
@@ -767,5 +775,27 @@ public class OfficeFragment extends Fragment {
                 });
             }
         }.start();
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                outRect.left = space;
+                outRect.right = space;
+            }
+        }
     }
 }

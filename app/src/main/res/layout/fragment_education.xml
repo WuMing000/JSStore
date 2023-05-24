@@ -36,7 +36,7 @@
             android:layout_below="@id/classroom_recycler_view"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
@@ -50,7 +50,7 @@
             android:layout_below="@id/classroom_recycler_view"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
@@ -68,11 +68,16 @@
             android:id="@+id/tv_english"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="英语学习"
-            android:textSize="26sp"
-            android:textColor="@color/black"
             android:layout_below="@id/textual_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="英语学习"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/english_recycler_view"
@@ -88,7 +93,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/english_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/translate_recycler_view"
@@ -104,7 +114,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/translate_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/teacher_recycler_view"
@@ -120,7 +135,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/teacher_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/children_recycler_view"
@@ -136,7 +156,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/children_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/picture_recycler_view"
@@ -152,7 +177,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/picture_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/paint_recycler_view"
@@ -168,7 +198,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/paint_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/enlighten_recycler_view"
@@ -184,7 +219,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/enlighten_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/preschool_recycler_view"
@@ -200,7 +240,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/preschool_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/middle_recycler_view"
@@ -216,7 +261,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/middle_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/programme_recycler_view"

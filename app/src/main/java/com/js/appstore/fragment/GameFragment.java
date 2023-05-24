@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -184,9 +185,13 @@ public class GameFragment extends Fragment {
         cardList = new ArrayList<>();
 
         playfulRecyclerView = inflate.findViewById(R.id.playful_recycler_view);
+        playfulRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         chessRecyclerView = inflate.findViewById(R.id.chess_recycler_view);
         puzzleRecyclerView = inflate.findViewById(R.id.puzzle_recycler_view);
+
         cardRecyclerView = inflate.findViewById(R.id.card_recycler_view);
+        cardRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         playfulRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), playList);
         cardRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), cardList);
@@ -591,6 +596,28 @@ public class GameFragment extends Fragment {
                 });
             }
         }.start();
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                outRect.left = space;
+                outRect.right = space;
+            }
+        }
     }
 
 }

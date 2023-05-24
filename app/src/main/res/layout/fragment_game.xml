@@ -33,18 +33,28 @@
             android:id="@+id/tv_chess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="棋牌桌游"
-            android:textSize="26sp"
-            android:textColor="@color/black"
             android:layout_below="@id/playful_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="棋牌桌游"
+            android:textColor="@color/black"
+            android:textSize="26sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="更多>"
             android:layout_toRightOf="@id/tv_chess"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_below="@id/playful_recycler_view"
             android:visibility="gone"/>
 
@@ -61,7 +71,7 @@
             android:layout_below="@id/chess_recycler_view"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
@@ -83,7 +93,12 @@
             android:textSize="26sp"
             android:textColor="@color/black"
             android:layout_below="@id/puzzle_recycler_view"
-            android:layout_margin="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/card_recycler_view"

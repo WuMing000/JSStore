@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -226,12 +227,21 @@ public class RecreationFragment extends Fragment {
         liveList = new ArrayList<>();
 
         videoRecyclerView = inflate.findViewById(R.id.video_recycler_view);
+        videoRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         cartoonRecyclerView = inflate.findViewById(R.id.cartoon_recycler_view);
+        cartoonRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         messageRecyclerView = inflate.findViewById(R.id.message_recycler_view);
+
         hotspotRecyclerView = inflate.findViewById(R.id.hotspot_recycler_view);
+        hotspotRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         reelRecyclerView = inflate.findViewById(R.id.reel_recycler_view);
         broadcastRecyclerView = inflate.findViewById(R.id.broadcast_recycler_view);
+
         liveRecyclerView = inflate.findViewById(R.id.live_recycler_view);
+        liveRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
 
         videoRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), videoList);
         cartoonRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), cartoonList);
@@ -855,6 +865,28 @@ public class RecreationFragment extends Fragment {
                 });
             }
         }.start();
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                outRect.left = space;
+                outRect.right = space;
+            }
+        }
     }
 
 }

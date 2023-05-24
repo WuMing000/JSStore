@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -245,7 +246,10 @@ public class LifeFragment extends Fragment {
         practicalRecyclerView = inflate.findViewById(R.id.practical_recycler_view);
         sportRecyclerView = inflate.findViewById(R.id.sport_recycler_view);
         healthRecyclerView = inflate.findViewById(R.id.health_recycler_view);
+
         investmentRecyclerView = inflate.findViewById(R.id.investment_recycler_view);
+        investmentRecyclerView.addItemDecoration(new SpacesItemDecoration(10));
+
         bringRecyclerView = inflate.findViewById(R.id.bring_recycler_view);
 
         investmentRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), investmentList);
@@ -943,5 +947,27 @@ public class LifeFragment extends Fragment {
                 });
             }
         }.start();
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) % 3 == 1) {
+                outRect.left = space;
+                outRect.right = space;
+            }
+        }
     }
 }
