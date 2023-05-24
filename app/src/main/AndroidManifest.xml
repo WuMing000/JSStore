@@ -17,6 +17,8 @@
         <activity
             android:name=".activity.NetworkCheckActivity"
             android:exported="true"
+            android:screenOrientation="unspecified"
+            android:theme="@style/MyThemeFullScreen"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +45,7 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="unspecified"
             android:theme="@style/MyThemeFullScreen"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize">

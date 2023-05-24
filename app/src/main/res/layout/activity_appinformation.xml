@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.APPInformationActivity"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:background="@color/light_white">
 
@@ -13,10 +12,11 @@
         android:id="@+id/ll_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical">
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical"
+        android:fitsSystemWindows="true">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -38,8 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
             android:paddingBottom="30dp"
             android:orientation="vertical">
 
@@ -50,8 +50,8 @@
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:src="@mipmap/ic_launcher"
                     android:scaleType="fitXY" />
 
@@ -97,6 +97,12 @@
 
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_image_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
             <TextView
                 android:id="@+id/tv_app_above"
                 android:layout_width="wrap_content"
@@ -105,17 +111,16 @@
                 android:textSize="26sp"
                 android:textColor="@color/black"
                 android:layout_below="@id/iv_icon"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/tv_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_introduce"
                 android:textColor="@color/gray"
                 android:textSize="22sp"
                 android:layout_below="@id/tv_app_above"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="10dp" />
 
         </LinearLayout>
 

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomUtil.hideBottomUIMenu(this);
-        CustomUtil.setStatusBar(this);
+//        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_main);
 //        intent = new Intent(this, MyService.class);
 //        startService(intent);

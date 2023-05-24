@@ -17,11 +17,18 @@ import com.bumptech.glide.Glide;
 import com.js.appstore.BaseActivity;
 import com.js.appstore.MyApplication;
 import com.js.appstore.R;
+import com.js.appstore.adapter.ImageRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 @SuppressLint("LongLogTag")
 public class APPInformationActivity extends BaseActivity {
@@ -31,6 +38,9 @@ public class APPInformationActivity extends BaseActivity {
     private Button btnState;
     private ImageView ivIcon;
     private TextView tvAppName, tvAppApplication, tvIntroduce;
+    private RecyclerView rvImageList;
+    private ImageRecyclerViewAdapter adapter;
+    private List<String> mList;
 
     private APPLocalBean appLocalBean;
 
@@ -40,15 +50,8 @@ public class APPInformationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomUtil.hideBottomUIMenu(this);
-        CustomUtil.setStatusBar(this);
+//        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_appinformation);
-
-        llBack = findViewById(R.id.ll_back);
-        btnState = findViewById(R.id.btn_state);
-        ivIcon = findViewById(R.id.iv_icon);
-        tvAppName = findViewById(R.id.tv_app_name);
-        tvAppApplication = findViewById(R.id.tv_app_information);
-        tvIntroduce = findViewById(R.id.tv_introduce);
 
         initData();
         initOnClickListener();
@@ -91,6 +94,19 @@ public class APPInformationActivity extends BaseActivity {
     }
 
     private void initData() {
+        llBack = findViewById(R.id.ll_back);
+        btnState = findViewById(R.id.btn_state);
+        ivIcon = findViewById(R.id.iv_icon);
+        tvAppName = findViewById(R.id.tv_app_name);
+        tvAppApplication = findViewById(R.id.tv_app_information);
+        tvIntroduce = findViewById(R.id.tv_introduce);
+        rvImageList = findViewById(R.id.rv_image_list);
+
+        mList = new ArrayList<>();
+        adapter = new ImageRecyclerViewAdapter(this, mList);
+        rvImageList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        rvImageList.setAdapter(adapter);
+
         Intent intent = getIntent();
         appLocalBean = (APPLocalBean) intent.getSerializableExtra("appHomeBean");
         btnState.setText(appLocalBean.getAppState());
@@ -99,6 +115,11 @@ public class APPInformationActivity extends BaseActivity {
         tvAppApplication.setText(appLocalBean.getAppInformation());
         tvIntroduce.setText(appLocalBean.getAppIntroduce());
         String appPicture = appLocalBean.getAppPicture();
+        if (appPicture.length() != 0) {
+            String[] split = appPicture.split(",");
+            mList.addAll(Arrays.asList(split));
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initOnClickListener() {

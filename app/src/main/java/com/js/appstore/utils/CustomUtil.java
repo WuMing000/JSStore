@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import static android.content.pm.PackageManager.GET_URI_PERMISSION_PATTERNS;
@@ -47,17 +48,18 @@ public class CustomUtil {
         int flags;
         int curApiVersion = android.os.Build.VERSION.SDK_INT;
         // This work only for android 4.4+
-        if(curApiVersion >= Build.VERSION_CODES.KITKAT){
+        if(curApiVersion >= Build.VERSION_CODES.M){
 
             // This work only for android 4.4+
             // hide navigation bar permanently in android activity
             // touch the screen, the navigation bar will not show
 
             flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }else{
             // touch the screen, the navigation bar will show
-            flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|
+            flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                     View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         }
 
@@ -349,7 +351,7 @@ public class CustomUtil {
 
 //            activity.getWindow().setStatusBarColor(MyApplication.getInstance().getContext().getResources().getColor(R.color.white, null));//设置状态栏颜色
 
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//实现状态栏图标和文字颜色为暗色
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//实现状态栏图标和文字颜色为暗色
 
         }
 
