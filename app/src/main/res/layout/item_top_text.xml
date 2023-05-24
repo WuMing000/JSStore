@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="fitXY"
             android:layout_margin="10dp" />
 
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textColor="#442244"/>
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 

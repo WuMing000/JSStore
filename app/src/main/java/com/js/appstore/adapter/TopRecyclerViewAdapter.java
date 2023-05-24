@@ -40,7 +40,7 @@ public class TopRecyclerViewAdapter extends RecyclerView.Adapter<TopRecyclerView
     @Override
     public void onBindViewHolder(@NonNull TopRecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (mList.size() != 0) {
-            String i = mList.get(position % mList.size()).getAppPicture();
+            String i = mList.get(position % mList.size()).getAppPicture().split(",")[0];
 //            holder.ivRecommend.setImageResource(i);
             Glide.with(mContext).load(i).into(holder.ivRecommend);
             String iconId = mList.get(position % mList.size()).getAppIcon();

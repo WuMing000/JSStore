@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -100,7 +101,9 @@ public class APPInformationActivity extends BaseActivity {
         tvAppName = findViewById(R.id.tv_app_name);
         tvAppApplication = findViewById(R.id.tv_app_information);
         tvIntroduce = findViewById(R.id.tv_introduce);
+
         rvImageList = findViewById(R.id.rv_image_list);
+        rvImageList.addItemDecoration(new SpacesItemDecoration(30));
 
         mList = new ArrayList<>();
         adapter = new ImageRecyclerViewAdapter(this, mList);
@@ -162,6 +165,27 @@ public class APPInformationActivity extends BaseActivity {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("安装");
                 }
+            }
+        }
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view,
+                                   RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) != mList.size() - 1) {
+                outRect.right = space;
             }
         }
     }
