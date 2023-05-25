@@ -1,13 +1,19 @@
 package com.js.appstore.activity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,8 +25,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.js.appstore.MyApplication;
 import com.js.appstore.R;
 import com.js.appstore.adapter.MainFragmentAdapter;
+import com.js.appstore.bean.DownBean;
+import com.js.appstore.bean.DownProgressBean;
 import com.js.appstore.fragment.EducationFragment;
 import com.js.appstore.fragment.GameFragment;
 import com.js.appstore.fragment.LifeFragment;
@@ -29,12 +38,15 @@ import com.js.appstore.fragment.RecommendFragment;
 import com.js.appstore.fragment.RecreationFragment;
 import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
+import com.js.appstore.view.UpdateDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,14 +62,84 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etSource;
 
+    private UpdateDialog updateDialog;
+
+    private Handler handler = new Handler(Looper.myLooper()) {
+        @Override
+        public void dispatchMessage(@NonNull Message msg) {
+            super.dispatchMessage(msg);
+            switch (msg.what) {
+                case 0x001 :
+                    Log.e(TAG, "版本号不一致");
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+//                    dialog = alertDialog.setMessage("有新版本")
+//                            .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    CustomUtil.exitAPP();
+//                                }
+//                            })
+//                            .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    DownBean downBean = CustomUtil.updateAPK("http://114.132.220.67:8080/test/js_project/store/js_store_1.0.apk");
+//                                    Timer timer = new Timer();
+//                                    timer.schedule(new TimerTask() {
+//                                        @Override
+//                                        public void run() {
+//                                            DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
+//                                            Log.e(TAG, downProgressBean.getProgress());
+//                                        }
+//                                    }, 0, 1000);
+//                                }
+//                            }).setCancelable(false).create();
+//                    dialog.show();
+                    updateDialog = new UpdateDialog(MainActivity.this);
+                    updateDialog.setMessage("应用商店有新版本！！！");
+                    updateDialog.setTitleVisible(View.GONE);
+                    updateDialog.setExitOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CustomUtil.exitAPP();
+                        }
+                    });
+                    updateDialog.setUpdateOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updateDialog.setProgressVisible(View.VISIBLE);
+                            updateDialog.setButtonVisible(View.GONE);
+                            DownBean downBean = CustomUtil.updateAPK("http://114.132.220.67:8080/test/js_project/store/js_store.apk");
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
+                                    Log.e(TAG, downProgressBean.getProgress());
+                                    float progress = Float.parseFloat(downProgressBean.getProgress());
+                                    updateDialog.setPbProgress((int) progress);
+                                    updateDialog.setTvProgress(downProgressBean.getProgress());
+                                }
+                            }, 0, 1000);
+                        }
+                    });
+                    updateDialog.setCancelable(false);
+                    updateDialog.show();
+                    break;
+                case 0x002 :
+                    Log.e(TAG, "版本号一致");
+                    break;
+            }
+        }
+    };
+
 //    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomUtil.hideBottomUIMenu(this);
 //        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_main);
+        CustomUtil.hideNavigationBar(this);
 //        intent = new Intent(this, MyService.class);
 //        startService(intent);
         viewPager = findViewById(R.id.main_view_pager);
@@ -142,6 +224,20 @@ public class MainActivity extends AppCompatActivity {
             int position = extras.getInt("position");
             setDefaultSelected(position);
         }
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                String serverFile = CustomUtil.getServerFile("http://114.132.220.67:8080/test/js_project/store/Version.txt");
+                String localVersionName = CustomUtil.getLocalVersionName();
+                if (localVersionName.equals(serverFile)) {
+                    handler.sendEmptyMessageAtTime(0x002, 100);
+                } else {
+                    handler.sendEmptyMessageAtTime(0x001, 100);
+                }
+            }
+        }.start();
     }
 
     private void setDefaultSelected(int position) {
@@ -183,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 //        stopService(intent);
+        if (updateDialog != null) {
+            updateDialog.dismiss();
+        }
     }
 
     @Override

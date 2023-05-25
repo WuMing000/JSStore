@@ -50,9 +50,10 @@ public class APPInformationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomUtil.hideBottomUIMenu(this);
+//        CustomUtil.hideBottomUIMenu(this);
 //        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_appinformation);
+        CustomUtil.hideNavigationBar(this);
 
         initData();
         initOnClickListener();

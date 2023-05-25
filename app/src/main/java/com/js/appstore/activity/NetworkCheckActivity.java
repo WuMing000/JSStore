@@ -23,9 +23,10 @@ public class NetworkCheckActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomUtil.hideBottomUIMenu(this);
+//        CustomUtil.hideBottomUIMenu(this);
 //        CustomUtil.setStatusBar(this);
         setContentView(R.layout.activity_network_check);
+        CustomUtil.hideNavigationBar(this);
     }
 
     @Override

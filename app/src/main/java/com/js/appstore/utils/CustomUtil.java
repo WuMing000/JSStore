@@ -1,6 +1,7 @@
 package com.js.appstore.utils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.DownloadManager;
@@ -18,6 +19,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -26,7 +29,12 @@ import com.js.appstore.R;
 import com.js.appstore.bean.DownBean;
 import com.js.appstore.bean.DownProgressBean;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,27 +244,6 @@ public class CustomUtil {
         }
     }
 
-    public static boolean isAppExists(String packageName) {
-        PackageManager pm = MyApplication.getInstance().getContext().getPackageManager();
-        //获取到所有安装了的应用程序的信息，包括那些卸载了的，但没有清除数据的应用程序
-        List<PackageInfo> list2 = pm.getInstalledPackages(GET_URI_PERMISSION_PATTERNS);
-//        int j = 0;
-        for (PackageInfo packageInfo : list2) {
-            if (NotActiveApp(MyApplication.getInstance().getContext(), packageName)) {
-                continue;
-            }
-            if (isSystemApplication(MyApplication.getInstance().getContext(), packageName)) {
-                continue;
-            }
-            if (packageName.equals(packageInfo.packageName)) {
-                return true;
-            }
-//            j++;
-        }
-//        Log.e("========ccc", "应用的总个数:" + j);
-        return false;
-    }
-
     public static boolean isAppInstalled(String packageName) {
         PackageManager manager = MyApplication.getInstance().getContext().getPackageManager();
         Intent i = manager.getLaunchIntentForPackage(packageName);
@@ -264,28 +251,6 @@ public class CustomUtil {
             return false;
         }
         return true;
-    }
-
-    /** 判断是否是系统应用 */
-    public static boolean isSystemApplication(Context context, String packageName){
-        PackageManager mPackageManager = context.getPackageManager();
-        try {
-            final PackageInfo packageInfo = mPackageManager.getPackageInfo(packageName, PackageManager.GET_CONFIGURATIONS);
-            if((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM)!=0){
-                return true;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * 判断app能不能主动启动 否就隐藏
-     * */
-    public static boolean NotActiveApp(Context context, String packageName){
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        return intent == null;
     }
 
     public static void openAPK(String packageName) {
@@ -309,6 +274,14 @@ public class CustomUtil {
         }
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
+    }
+
+    public static void exitAPP() {
+        ActivityManager activityManager = (ActivityManager) MyApplication.getInstance().getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> appTaskList = activityManager.getAppTasks();
+        for (ActivityManager.AppTask appTask : appTaskList) {
+            appTask.finishAndRemoveTask();
+        }
     }
 
     /**
@@ -375,5 +348,156 @@ public class CustomUtil {
             }
         }
         return false;
+    }
+
+    public static String getServerFile(String path) {
+        //获取网络数据
+        //01.定义获取网络的数据的路径
+//        String path="http://114.132.220.67:8080/test/js_project/store/Version.txt";
+//        StringBuilder stringBuffer = null;
+        String str = "";
+        try {
+            //2.实例化url
+            URL url = new URL(path);
+            //3.获取连接属性
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //4.设置请求方式
+            conn.setRequestMethod("GET");
+            //以及请求时间
+            conn.setConnectTimeout(5000);
+            //5.获取响应码
+            int code = conn.getResponseCode();
+            if (200 == code) {
+                //6.获取返回的数据json
+                InputStream is = conn.getInputStream();
+                //7.测试（删除-注释）
+                //缓冲字符流
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+//                stringBuffer = new StringBuilder();
+                if ((str = br.readLine()) != null) {
+//                    stringBuffer.append(str);
+                    Log.i("tt", str);
+                    return str;
+                }
+//                Log.i("tt", stringBuffer.toString());
+                //8.解析
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    /**
+     * 获取本地软件版本号名称
+     */
+    public static String getLocalVersionName() {
+        String localVersion = "";
+        try {
+            PackageInfo packageInfo = MyApplication.getInstance().getContext().getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(MyApplication.getInstance().getContext().getPackageName(), 0);
+            localVersion = packageInfo.versionName;
+            Log.d(TAG, "本软件的版本名：" + localVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return localVersion;
+    }
+
+    public static DownBean updateAPK(String url) {
+
+        DownloadManager manager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        /*
+         * 1. 封装下载请求
+         */
+        // 创建下载请求
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+
+        Log.e(TAG, MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath());
+        Log.e(TAG, url.substring(url.lastIndexOf("/") + 1));
+        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), "com.js.store");
+        request.setDestinationUri(Uri.fromFile(saveFile));
+
+        if (saveFile.exists()) {
+            saveFile.delete();
+            Log.e(TAG, "删除");
+        }
+
+        long downloadId = manager.enqueue(request);
+
+        return new DownBean(downloadId);
+    }
+
+    public static DownProgressBean updateProgress(long downloadId, Timer timer) {
+        DownProgressBean downProgressBean = new DownProgressBean();
+        DownloadManager manager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        // 创建一个查询对象
+        DownloadManager.Query query = new DownloadManager.Query();
+        // 根据 下载ID 过滤结果
+        query.setFilterById(downloadId);
+        // 还可以根据状态过滤结果
+        // query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
+        // 执行查询, 返回一个 Cursor (相当于查询数据库)
+        Cursor cursor = manager.query(query);
+        if (!cursor.moveToFirst()) {
+            cursor.close();
+            return downProgressBean;
+        }
+        // 下载ID
+        @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
+        // 下载请求的状态
+        @SuppressLint("Range") int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+        // 下载文件在本地保存的路径（Android 7.0 以后 COLUMN_LOCAL_FILENAME 字段被弃用, 需要用 COLUMN_LOCAL_URI 字段来获取本地文件路径的 Uri）
+        @SuppressLint("Range") String localFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+        // 已下载的字节大小
+        @SuppressLint("Range") long downloadedSoFar = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+        // 下载文件的总字节大小
+        @SuppressLint("Range") long totalSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)) == -1 ? 1 : cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+        cursor.close();
+//        System.out.println("下载进度: " + downloadedSoFar  + "/" + totalSize);
+        DecimalFormat decimalFormat = new DecimalFormat( "##0.00 ");
+        String dd = decimalFormat.format(downloadedSoFar * 1.0f / totalSize * 100);
+//        Log.e(TAG, downloadedSoFar * 1.0f / totalSize * 100 + "");
+        Log.e(TAG, dd);
+        downProgressBean = new DownProgressBean(downloadId, dd);
+        if (status == DownloadManager.STATUS_SUCCESSFUL) {
+            File installFile = null;
+            File saveFile = new File(localFilename.substring(7));
+            if (saveFile.exists()) {
+                installFile = renameFile(localFilename.substring(7), localFilename.substring(7) + ".apk");
+            }
+//            System.out.println("下载成功, 打开文件, 文件路径: " + localFilename);
+            installAPK(MyApplication.getInstance().getContext(), installFile);
+            timer.cancel();
+        }
+
+        return downProgressBean;
+    }
+
+    /**
+     * 隐藏底部底部导航栏
+     */
+    public static void hideNavigationBar(Activity activity) {
+
+        Window window;
+        window = activity.getWindow();
+        WindowManager.LayoutParams params = window.getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            window.setAttributes(params);
+
+
+            int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // hide nav bar; // hide status bar
+
+            uiFlags |= 0x00001000;    //SYSTEM_UI_FLAG_IMMERSIVE_STICKY: hide navigation bars - compatibility: building API level is lower thatn 19, use magic number directly for higher API target level
+
+            activity.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
     }
 }
