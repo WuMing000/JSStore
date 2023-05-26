@@ -857,7 +857,7 @@ public class RecreationFragment extends Fragment {
             public void run() {
                 super.run();
                 //1.创建OkHttpClient对象
-                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(60000, TimeUnit.MILLISECONDS).readTimeout(60000, TimeUnit.MILLISECONDS).build();
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().connectTimeout(120000, TimeUnit.MILLISECONDS).readTimeout(120000, TimeUnit.MILLISECONDS).build();
                 //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(url).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象
@@ -869,7 +869,8 @@ public class RecreationFragment extends Fragment {
                     public void onFailure(Call call, IOException e) {
                         e.printStackTrace();
                         Log.e("TAG", "服务器异常，请求数据失败");
-                        handler.sendEmptyMessageAtTime(0x015, 100);
+                        getAPPData(url);
+//                        handler.sendEmptyMessageAtTime(0x015, 100);
                     }
                     //请求成功执行的方法
                     @Override

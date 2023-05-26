@@ -2,7 +2,8 @@ package com.js.appstore.manager;
 
 public class Contacts {
 
-    public static final String SERVER_URL = "http://114.132.220.67";
+//    public static final String SERVER_URL = "http://114.132.220.67";
+    public static final String SERVER_URL = "http://119.23.48.238";
     public static final String SERVER_PORT = "8086";
 
     //RecommendFragment

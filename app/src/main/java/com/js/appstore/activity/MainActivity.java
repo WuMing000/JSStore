@@ -36,6 +36,7 @@ import com.js.appstore.fragment.LifeFragment;
 import com.js.appstore.fragment.OfficeFragment;
 import com.js.appstore.fragment.RecommendFragment;
 import com.js.appstore.fragment.RecreationFragment;
+import com.js.appstore.manager.Contacts;
 import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 import com.js.appstore.view.UpdateDialog;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             updateDialog.setProgressVisible(View.VISIBLE);
                             updateDialog.setButtonVisible(View.GONE);
-                            DownBean downBean = CustomUtil.updateAPK("http://114.132.220.67:8080/test/js_project/store/js_store.apk");
+                            DownBean downBean = CustomUtil.updateAPK(Contacts.SERVER_URL + ":8080/test/js_project/store/js_store.apk");
                             Timer timer = new Timer();
                             timer.schedule(new TimerTask() {
                                 @Override
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 super.run();
-                String serverFile = CustomUtil.getServerFile("http://114.132.220.67:8080/test/js_project/store/Version.txt");
+                String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":8080/test/js_project/store/Version.txt");
                 String localVersionName = CustomUtil.getLocalVersionName();
                 if (localVersionName.equals(serverFile)) {
                     handler.sendEmptyMessageAtTime(0x002, 100);
