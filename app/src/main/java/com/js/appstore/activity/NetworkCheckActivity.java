@@ -42,6 +42,7 @@ public class NetworkCheckActivity extends BaseActivity {
                 intent.putExtra("position", position);
             }
             startActivity(intent);
+            finish();
         } else {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             dialog = alertDialog.setMessage("请先连接网络")

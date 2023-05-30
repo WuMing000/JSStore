@@ -90,8 +90,10 @@ public class MyService extends Service {
         if (myInstalledReceiver != null) {
             unregisterReceiver(myInstalledReceiver);
         }
-        for (Long downloadId : downloadIds) {
-            downloadManager.remove(downloadId);
+        if (downloadIds != null) {
+            for (Long downloadId : downloadIds) {
+                downloadManager.remove(downloadId);
+            }
         }
     }
 

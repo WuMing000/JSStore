@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.js.appstore.MyApplication;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     updateDialog.setExitOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CustomUtil.exitAPP();
+                            CustomUtil.killAppProcess();
                         }
                     });
                     updateDialog.setUpdateOnClickListener(new View.OnClickListener() {
@@ -307,5 +308,23 @@ public class MainActivity extends AppCompatActivity {
         }
         // 必不可少，否则所有的组件都不会有TouchEvent了
         return getWindow().superDispatchTouchEvent(ev) || onTouchEvent(ev);
+    }
+
+
+    //记录用户首次点击返回键的时间
+    private long firstTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long secondTime= System.currentTimeMillis();
+            if (secondTime - firstTime > 1500) {
+                Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                firstTime = secondTime;
+                return true;
+            } else {
+                CustomUtil.killAppProcess();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
