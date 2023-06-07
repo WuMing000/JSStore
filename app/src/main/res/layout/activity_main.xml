@@ -40,7 +40,7 @@
                 android:background="@drawable/selector_et_bg"
                 android:drawableLeft="@drawable/bg_home_et_source"
                 android:padding="8dp"
-                android:hint="你要搜索什么应用呢"
+                android:hint="搜索感兴趣的应用"
                 android:imeOptions="actionSearch|flagNoExtractUi"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -49,7 +49,8 @@
                 android:textColor="@color/gray"
                 android:drawablePadding="5dp"
                 android:layout_gravity="center_vertical"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

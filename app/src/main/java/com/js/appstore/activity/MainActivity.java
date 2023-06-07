@@ -118,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                                     DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
                                     Log.e(TAG, downProgressBean.getProgress());
                                     float progress = Float.parseFloat(downProgressBean.getProgress());
+                                    if (progress == 100.00) {
+                                        updateDialog.dismiss();
+                                    }
                                     updateDialog.setPbProgress((int) progress);
                                     updateDialog.setTvProgress(downProgressBean.getProgress());
                                 }
