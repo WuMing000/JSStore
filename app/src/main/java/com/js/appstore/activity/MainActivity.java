@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
                     updateDialog.setExitOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CustomUtil.killAppProcess();
+//                            CustomUtil.killAppProcess();
+                            updateDialog.dismiss();
                         }
                     });
                     updateDialog.setUpdateOnClickListener(new View.OnClickListener() {
