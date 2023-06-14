@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -118,12 +119,21 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
                                     Log.e(TAG, downProgressBean.getProgress());
-                                    float progress = Float.parseFloat(downProgressBean.getProgress());
-                                    if (progress == 100.00) {
+                                    try {
+                                        float progress = Float.parseFloat(downProgressBean.getProgress());
+                                        if (progress == 100.00) {
+                                            updateDialog.dismiss();
+                                        }
+                                        updateDialog.setPbProgress((int) progress);
+                                        updateDialog.setTvProgress(downProgressBean.getProgress());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                         updateDialog.dismiss();
+                                        timer.cancel();
+                                        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                                        manager.remove(downProgressBean.getDownloadId());
+                                        handler.sendEmptyMessageAtTime(0x003, 100);
                                     }
-                                    updateDialog.setPbProgress((int) progress);
-                                    updateDialog.setTvProgress(downProgressBean.getProgress());
                                 }
                             }, 0, 1000);
                         }
@@ -133,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 0x002 :
                     Log.e(TAG, "版本号一致");
+                    break;
+                case 0x003 :
+                    Toast.makeText(MainActivity.this, "下载异常，已取消下载", Toast.LENGTH_SHORT).show();
                     break;
             }
         }

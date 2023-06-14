@@ -162,6 +162,9 @@ public class APPInformationActivity extends BaseActivity {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText(intent.getStringExtra("progress") + "%");
                 }
+                if ("NaN".equals(intent.getStringExtra("progress"))) {
+                    btnState.setText("下载");
+                }
             } else if ("js.app.download.completed".equals(intent.getAction())) {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("安装");

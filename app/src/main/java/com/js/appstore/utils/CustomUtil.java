@@ -165,6 +165,11 @@ public class CustomUtil {
 //        System.out.println("下载进度: " + downloadedSoFar  + "/" + totalSize);
         DecimalFormat decimalFormat = new DecimalFormat( "##0.00 ");
         String dd = decimalFormat.format(downloadedSoFar * 1.0f / totalSize * 100);
+        if (totalSize == 0) {
+            manager.remove(downloadId);
+            timer.cancel();
+            dd = "NaN";
+        }
 //        Log.e(TAG, downloadedSoFar * 1.0f / totalSize * 100 + "");
         Log.e(TAG, dd);
         downProgressBean = new DownProgressBean(downloadId, dd);
