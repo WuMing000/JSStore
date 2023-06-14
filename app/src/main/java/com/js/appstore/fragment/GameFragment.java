@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -395,17 +396,17 @@ public class GameFragment extends Fragment {
 
         playfulRecyclerViewAdapter.setStateOnClickListener(new UserRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(playList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", playList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", playList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(playList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), playList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(playList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(playList.get(position).getAppPackage());
                 }
             }
@@ -413,17 +414,17 @@ public class GameFragment extends Fragment {
 
         chessRecyclerViewAdapter.setStateOnClickListener(new ChoiceRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(chessList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", chessList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", chessList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(chessList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), chessList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(chessList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(chessList.get(position).getAppPackage());
                 }
             }
@@ -431,17 +432,17 @@ public class GameFragment extends Fragment {
 
         puzzleRecyclerViewAdapter.setStateOnClickListener(new ChoiceRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(puzzleList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", puzzleList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", puzzleList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(puzzleList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), puzzleList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(puzzleList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(puzzleList.get(position).getAppPackage());
                 }
             }
@@ -449,17 +450,17 @@ public class GameFragment extends Fragment {
 
         cardRecyclerViewAdapter.setStateOnClickListener(new UserRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(cardList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", cardList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", cardList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(cardList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), cardList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(cardList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(cardList.get(position).getAppPackage());
                 }
             }

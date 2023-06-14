@@ -58,7 +58,7 @@ public class ChoiceRecyclerViewAdapter extends RecyclerView.Adapter<ChoiceRecycl
         holder.btnState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onStateClickListener.OnClick(position);
+                onStateClickListener.OnClick(position, holder.btnState);
             }
         });
     }
@@ -95,6 +95,6 @@ public class ChoiceRecyclerViewAdapter extends RecyclerView.Adapter<ChoiceRecycl
     }
 
     public interface OnStateClickListener {
-        void OnClick(int position);
+        void OnClick(int position, TextView btnState);
     }
 }

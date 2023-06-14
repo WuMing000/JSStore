@@ -61,7 +61,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             @Override
             public void onClick(View v) {
 //                btnState = holder.btnState;
-                onStateClickListener.OnClick(position);
+                onStateClickListener.OnClick(position, holder.btnState);
             }
         });
     }
@@ -102,6 +102,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     }
 
     public interface OnStateClickListener {
-        void OnClick(int position);
+        void OnClick(int position, TextView btnState);
     }
 }

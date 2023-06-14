@@ -138,15 +138,15 @@ public class APPInformationActivity extends BaseActivity {
         btnState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("下载".equals(appLocalBean.getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", appLocalBean.getAppDownLoadURL());
                     intent.putExtra("packageName", appLocalBean.getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(appLocalBean.getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(appLocalBean.getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(appLocalBean.getAppPackage());
                 }
             }
@@ -162,9 +162,9 @@ public class APPInformationActivity extends BaseActivity {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText(intent.getStringExtra("progress") + "%");
                 }
-                if ("NaN".equals(intent.getStringExtra("progress"))) {
-                    btnState.setText("下载");
-                }
+//                if ("NaN".equals(intent.getStringExtra("progress"))) {
+//                    btnState.setText("下载");
+//                }
             } else if ("js.app.download.completed".equals(intent.getAction())) {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("安装");

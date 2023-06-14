@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -494,17 +495,17 @@ public class OfficeFragment extends Fragment {
 
         officeRecyclerViewAdapter.setStateOnClickListener(new UserRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(officeList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", officeList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", officeList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(officeList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), officeList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(officeList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(officeList.get(position).getAppPackage());
                 }
             }
@@ -512,17 +513,17 @@ public class OfficeFragment extends Fragment {
 
         documentRecyclerViewAdapter.setStateOnClickListener(new ChoiceRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(documentList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", documentList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", documentList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(documentList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), documentList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(documentList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(documentList.get(position).getAppPackage());
                 }
             }
@@ -530,17 +531,17 @@ public class OfficeFragment extends Fragment {
 
         communicationRecyclerViewAdapter.setStateOnClickListener(new ChoiceRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(communicationList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", communicationList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", communicationList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(communicationList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), communicationList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(communicationList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(communicationList.get(position).getAppPackage());
                 }
             }
@@ -548,17 +549,17 @@ public class OfficeFragment extends Fragment {
 
         thoughtRecyclerViewAdapter.setStateOnClickListener(new UserRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(thoughtList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", thoughtList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", thoughtList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(thoughtList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), thoughtList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(thoughtList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(thoughtList.get(position).getAppPackage());
                 }
             }
@@ -566,17 +567,17 @@ public class OfficeFragment extends Fragment {
 
         instrumentRecyclerViewAdapter.setStateOnClickListener(new ChoiceRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(instrumentList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", instrumentList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", instrumentList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(instrumentList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), instrumentList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(instrumentList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(instrumentList.get(position).getAppPackage());
                 }
             }
@@ -584,17 +585,17 @@ public class OfficeFragment extends Fragment {
 
         networkDiskRecyclerViewAdapter.setStateOnClickListener(new UserRecyclerViewAdapter.OnStateClickListener() {
             @Override
-            public void OnClick(int position) {
+            public void OnClick(int position, TextView btnState) {
                 Log.e(TAG, "setState");
-                if ("下载".equals(networkDiskList.get(position).getAppState())) {
+                if ("下载".equals(btnState.getText().toString())) {
                     Intent intent = new Intent("js.download.app");
                     intent.putExtra("url", networkDiskList.get(position).getAppDownLoadURL());
                     intent.putExtra("packageName", networkDiskList.get(position).getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                } else if ("安装".equals(networkDiskList.get(position).getAppState())) {
+                } else if ("安装".equals(btnState.getText().toString())) {
                     File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), networkDiskList.get(position).getAppPackage() + ".apk");
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
-                } else if ("打开".equals(networkDiskList.get(position).getAppState())) {
+                } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(networkDiskList.get(position).getAppPackage());
                 }
             }
