@@ -2,10 +2,12 @@ package com.js.appstore.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,7 +51,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@SuppressLint({"NotifyDataSetChanged", "LongLogTag"})
+@SuppressLint({"NotifyDataSetChanged", "LongLogTag", "Range"})
 public class EducationFragment extends Fragment {
 
     private static final String TAG = "EducationFragment==============>";
@@ -100,7 +102,7 @@ public class EducationFragment extends Fragment {
                         Bundle bundle = (Bundle) msg.obj;
                         String text = bundle.getString("text");
                         String url = bundle.getString("url");
-                        Log.e(TAG, "text:" + text + ",url:" + url.split("/")[3]);
+//                        Log.e(TAG, "text:" + text + ",url:" + url.split("/")[3]);
                         ArrayList<APPServerBean> list = new Gson().fromJson(text, new TypeToken<List<APPServerBean>>() {
                         }.getType());
                         new Thread() {
@@ -116,54 +118,184 @@ public class EducationFragment extends Fragment {
                                     } else if (saveFile.exists()) {
                                         appState = "安装";
                                     }
+                                    //定义一个对象，构建一行数据
+                                    ContentValues values = new ContentValues();//用 value 表示一行
+//                                        values.put("appId", appServerBean.getAppId());
+                                    values.put("appName", appServerBean.getAppName());
+                                    values.put("appPackage", appServerBean.getAppPackage());
+                                    values.put("appInformation", appServerBean.getAppInformation());
+                                    values.put("appIcon", appServerBean.getAppIcon());
+                                    values.put("appDownLoadURL", appServerBean.getAppDownLoadURL());
+                                    values.put("appIntroduce", appServerBean.getAppIntroduce());
+                                    values.put("appPicture", appServerBean.getAppPicture());
                                     if (Contacts.GET_CLASSROOM_INFORMATION.equals(url.split("/")[3])) {
-                                        classroomList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x004, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("ClassroomInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("ClassroomInformation", null, values);
+                                            classroomList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x004, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("ClassroomInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_TEXTUAL_INFORMATION.equals(url.split("/")[3])) {
-                                        textualList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x005, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("TextualInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("TextualInformation", null, values);
+                                            textualList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x005, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("TextualInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_ENGLISH_INFORMATION.equals(url.split("/")[3])) {
-                                        englishList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x006, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("EnglishInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("EnglishInformation", null, values);
+                                            englishList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x006, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("EnglishInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_TRANSLATE_INFORMATION.equals(url.split("/")[3])) {
-                                        translateList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x007, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("TranslateInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("TranslateInformation", null, values);
+                                            translateList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x007, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("TranslateInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_TEACHER_INFORMATION.equals(url.split("/")[3])) {
-                                        teacherList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x008, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("TeacherInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("TeacherInformation", null, values);
+                                            teacherList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x008, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("TeacherInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_CHILDREN_INFORMATION.equals(url.split("/")[3])) {
-                                        childrenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x009, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("ChildrenInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("ChildrenInformation", null, values);
+                                            childrenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x009, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("ChildrenInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_PICTURE_INFORMATION.equals(url.split("/")[3])) {
-                                        pictureList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x010, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("PictureInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("PictureInformation", null, values);
+                                            pictureList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x010, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("PictureInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_PAINT_INFORMATION.equals(url.split("/")[3])) {
-                                        paintList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x011, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("PaintInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("PaintInformation", null, values);
+                                            paintList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x011, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("PaintInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_ENLIGHTEN_INFORMATION.equals(url.split("/")[3])) {
-                                        enlightenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x012, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("EnlightenInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("EnlightenInformation", null, values);
+                                            enlightenList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x012, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("EnlightenInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_PRESCHOOL_INFORMATION.equals(url.split("/")[3])) {
-                                        preschoolList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x013, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("PreschoolInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("PreschoolInformation", null, values);
+                                            preschoolList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x013, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("PreschoolInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_MIDDLE_INFORMATION.equals(url.split("/")[3])) {
-                                        middleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x014, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("MiddleInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("MiddleInformation", null, values);
+                                            middleList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x014, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("MiddleInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     } else if (Contacts.GET_PROGRAMME_INFORMATION.equals(url.split("/")[3])) {
-                                        programmeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x015, 100);
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("ProgrammeInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("ProgrammeInformation", null, values);
+                                            programmeList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x015, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("ProgrammeInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     }
                                 }
 //                                handler.sendEmptyMessageAtTime(0x002, 100);
@@ -444,6 +576,314 @@ public class EducationFragment extends Fragment {
         } else {
             handler.sendEmptyMessageAtTime(0x001, 100);
         }
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query("ClassroomInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        classroomList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x004, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("TextualInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        textualList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x005, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("EnglishInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        englishList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x006, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("TranslateInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        translateList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x007, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("TeacherInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        teacherList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x008, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("ChildrenInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        childrenList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x009, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("PictureInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        pictureList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x010, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("PaintInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        paintList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x011, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("EnlightenInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        enlightenList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x012, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("PreschoolInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        preschoolList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x013, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("MiddleInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        middleList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x014, 100);
+                    }
+                }
+                cursor.close();
+                cursor = MyApplication.getInstance().getSqLiteDatabase().query("ProgrammeInformation", null, null, null, null, null, null);
+                if(cursor.getCount() != 0) {
+                    //循环遍历结果集，取出数据，显示出来
+                    while (cursor.moveToNext()) {
+                        int appId = cursor.getInt(cursor.getColumnIndex("appId"));
+                        String appName = cursor.getString(cursor.getColumnIndex("appName"));
+                        String appPackage = cursor.getString(cursor.getColumnIndex("appPackage"));
+                        String appInformation = cursor.getString(cursor.getColumnIndex("appInformation"));
+                        String appIcon = cursor.getString(cursor.getColumnIndex("appIcon"));
+                        String appDownLoadURL = cursor.getString(cursor.getColumnIndex("appDownLoadURL"));
+                        String appIntroduce = cursor.getString(cursor.getColumnIndex("appIntroduce"));
+                        String appPicture = cursor.getString(cursor.getColumnIndex("appPicture"));
+                        String appState = "下载";
+                        boolean appExists = CustomUtil.isAppInstalled(appPackage);
+                        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appPackage + ".apk");
+                        if (appExists) {
+                            appState = "打开";
+                        } else if (saveFile.exists()) {
+                            appState = "安装";
+                        }
+                        programmeList.add(new APPLocalBean(appId, appIcon, appName, appPackage, appInformation, appDownLoadURL, appIntroduce, appPicture, appState));
+                        handler.sendEmptyMessageAtTime(0x015, 100);
+                    }
+                }
+                cursor.close();
+            }
+        }.start();
+
         initOnClickListener();
 
         return inflate;
@@ -1147,7 +1587,7 @@ public class EducationFragment extends Fragment {
 //                        Log.e("TAG", response.body().string());
                         String text = response.body().string();
                         //ArrayList<APPHomeBean> list = new Gson().fromJson(text, new TypeToken<List<APPHomeBean>>() {}.getType());
-                        Log.e("TAG", text);
+//                        Log.e("TAG", text);
                         Message message = new Message();
                         Bundle bundle = new Bundle();
                         bundle.putString("text", text);
