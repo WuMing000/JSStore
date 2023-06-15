@@ -475,8 +475,6 @@ public class RecommendFragment extends Fragment {
                 workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
                 newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
                 readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
-                userRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
-                relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
             } else {
                 userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -486,9 +484,9 @@ public class RecommendFragment extends Fragment {
                 workpieceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
                 newsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
                 readRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-                userRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
-                relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
             }
+            userRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
+            relaxRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         } else {
             userRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
             choiceRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));

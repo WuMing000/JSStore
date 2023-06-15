@@ -378,10 +378,10 @@ public class OfficeFragment extends Fragment {
             handler.sendEmptyMessageAtTime(0x001, 100);
         }
 
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
                 Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query("OfficeInformation", null, null, null, null, null, null);
                 if(cursor.getCount() != 0) {
                     //循环遍历结果集，取出数据，显示出来
@@ -532,8 +532,8 @@ public class OfficeFragment extends Fragment {
                     }
                 }
                 cursor.close();
-            }
-        }.start();
+//            }
+//        }.start();
 
         initOnClickListener();
 
