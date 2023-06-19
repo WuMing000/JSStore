@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -34,8 +35,9 @@ import androidx.core.app.NotificationCompat;
 import static android.app.NotificationManager.IMPORTANCE_MIN;
 
 public class MyService extends Service {
-
     private static final String TAG = "MyService=========>";
+
+    private final IBinder binder = new MyBinder();
 
     private DownloadReceiver receiver;
     private MyInstalledReceiver myInstalledReceiver;
@@ -47,12 +49,6 @@ public class MyService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
     public void onCreate() {
         super.onCreate();
         Log.e(TAG, "onCreate()");
@@ -61,6 +57,29 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand()");
+//        downloadIds = new ArrayList<>();
+//        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+//        String channelId;
+//        // 8.0 以上需要特殊处理
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            // 静音通知
+//            channelId = createNotificationChannel("kim.hsl", "ForegroundService");
+//            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+//            Notification notification = builder.setOngoing(true)
+//                    .setSmallIcon(R.mipmap.ic_launcher)
+//                    .setPriority(IMPORTANCE_MIN)
+//                    .setCategory(Notification.CATEGORY_SERVICE)
+//                    .build();
+//            startForeground(1, notification);
+//        }
+//        receiver();
+        return START_STICKY;
+    }
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.i(TAG, "onBind............");
         downloadIds = new ArrayList<>();
         downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
         String channelId;
@@ -77,7 +96,12 @@ public class MyService extends Service {
             startForeground(1, notification);
         }
         receiver();
-        return START_STICKY;
+        return binder;
+    }
+    public class MyBinder extends Binder {
+        public MyService getService(){
+            return MyService.this;
+        }
     }
 
     @Override
@@ -90,7 +114,8 @@ public class MyService extends Service {
         if (myInstalledReceiver != null) {
             unregisterReceiver(myInstalledReceiver);
         }
-        if (downloadIds != null) {
+        if (downloadIds.size() != 0) {
+            Log.e(TAG, downloadIds.toString());
             for (Long downloadId : downloadIds) {
                 downloadManager.remove(downloadId);
             }
@@ -102,29 +127,31 @@ public class MyService extends Service {
             @Override
             public void onDataChanged(String url, String packageName) {
                 DownBean downBean = CustomUtil.download(url, packageName);
+                downloadIds.add(downBean.getDownloadId());
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         DownProgressBean downProgressBean = CustomUtil.downloadProgress(downBean.getDownloadId(), timer);
-                        downloadIds.add(downBean.getDownloadId());
-                        Log.e(TAG, downProgressBean.getProgress());
-                        if (downProgressBean.getProgress().contains("100.00")) {
-                            Log.e(TAG, "js.app.download.completed");
-                            Intent completedIntent = new Intent("js.app.download.completed");
+                        if (downProgressBean.getProgress() != null) {
+                            Log.e(TAG, downProgressBean.getProgress() + "");
+                            if (downProgressBean.getProgress().contains("100.00")) {
+                                Log.e(TAG, "js.app.download.completed");
+                                Intent completedIntent = new Intent("js.app.download.completed");
 //                            completedIntent.putExtra("position", position);
 //                            completedIntent.putExtra("getList", getList);
-                            completedIntent.putExtra("packageName", packageName);
-                            sendBroadcast(completedIntent);
-                        } else {
+                                completedIntent.putExtra("packageName", packageName);
+                                sendBroadcast(completedIntent);
+                            } else {
 //                            Log.e(TAG, "js.download.progress");
-                            Intent intent = new Intent("js.download.progress");
-                            intent.putExtra("downloadId", downProgressBean.getDownloadId());
+                                Intent intent = new Intent("js.download.progress");
+                                intent.putExtra("downloadId", downProgressBean.getDownloadId());
 //                            intent.putExtra("position", downProgressBean.getPosition());
-                            intent.putExtra("progress", downProgressBean.getProgress());
+                                intent.putExtra("progress", downProgressBean.getProgress());
 //                            intent.putExtra("getList", getList);
-                            intent.putExtra("packageName", packageName);
-                            sendBroadcast(intent);
+                                intent.putExtra("packageName", packageName);
+                                sendBroadcast(intent);
+                            }
                         }
                     }
                 }, 0, 1000);

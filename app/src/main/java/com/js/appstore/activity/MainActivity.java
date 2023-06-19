@@ -1,18 +1,18 @@
 package com.js.appstore.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.DownloadManager;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,8 +29,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.js.appstore.MyApplication;
 import com.js.appstore.R;
 import com.js.appstore.adapter.MainFragmentAdapter;
-import com.js.appstore.bean.DownBean;
-import com.js.appstore.bean.DownProgressBean;
 import com.js.appstore.fragment.EducationFragment;
 import com.js.appstore.fragment.GameFragment;
 import com.js.appstore.fragment.LifeFragment;
@@ -53,8 +50,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -127,6 +122,23 @@ public class MainActivity extends AppCompatActivity {
                     }.start();
                     break;
             }
+        }
+    };
+
+    private MyService myService = null;//绑定的service对象
+    public ServiceConnection conn= new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.i(TAG, "onServiceDisconnected>>>>>>>>");
+            myService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.i(TAG, "onServiceConnected>>>>>>>>");
+            myService = ((MyService.MyBinder) service).getService();
+            Log.i(TAG, myService +">>>>>>>>");
         }
     };
 
@@ -241,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":8080/test/js_project/store/Version.txt");
-                Log.e(TAG, serverFile.length() + "=======wu");
+                Log.e(TAG, serverFile.length() + "=======");
                 String localVersionName = CustomUtil.getLocalVersionName();
                 if (serverFile.length() == 0) {
                     handler.sendEmptyMessageAtTime(NETWORK_NO_CONNECT, 100);
@@ -262,6 +274,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
+
+        //开始绑定
+        Intent intent = new Intent(MainActivity.this, MyService.class);
+        bindService(intent, conn, Context.BIND_AUTO_CREATE);
     }
 
     private void getUpdateAPK(String version) {
@@ -326,7 +342,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy()");
 //        stopService(intent);
+        if (conn != null) {
+            unbindService(conn);
+        }
         if (updateDialog != null) {
             updateDialog.dismiss();
         }
@@ -368,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
                 firstTime = secondTime;
                 return true;
             } else {
-                CustomUtil.killAppProcess();
+                finish();
             }
         }
         return super.onKeyDown(keyCode, event);

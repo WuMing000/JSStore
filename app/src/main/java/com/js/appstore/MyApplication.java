@@ -43,11 +43,11 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         singleton = this;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(context, MyService.class));
-        } else {
-            startService(new Intent(this, MyService.class));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(context, MyService.class));
+//        } else {
+//            startService(new Intent(this, MyService.class));
+//        }
         MyDBOpenHelper myDBOpenHelper = new MyDBOpenHelper(context);
         sqLiteDatabase = myDBOpenHelper.getWritableDatabase();
     }

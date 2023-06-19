@@ -27,28 +27,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.TestActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
             android:name=".activity.APPInformationActivity"
             android:exported="false"
             android:screenOrientation="unspecified"
             android:theme="@style/MyThemeFullScreen"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize" />
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
             android:screenOrientation="unspecified"
             android:theme="@style/MyThemeFullScreen"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
