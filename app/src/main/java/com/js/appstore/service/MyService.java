@@ -117,7 +117,7 @@ public class MyService extends Service {
                             completedIntent.putExtra("packageName", packageName);
                             sendBroadcast(completedIntent);
                         } else {
-                            Log.e(TAG, "js.download.progress");
+//                            Log.e(TAG, "js.download.progress");
                             Intent intent = new Intent("js.download.progress");
                             intent.putExtra("downloadId", downProgressBean.getDownloadId());
 //                            intent.putExtra("position", downProgressBean.getPosition());

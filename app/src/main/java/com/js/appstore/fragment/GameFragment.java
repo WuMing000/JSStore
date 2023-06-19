@@ -632,7 +632,7 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG, intent.getAction());
+//            Log.e(TAG, intent.getAction());
             if ("js.download.progress".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : playList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {

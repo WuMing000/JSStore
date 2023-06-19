@@ -837,7 +837,7 @@ public class OfficeFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG, intent.getAction());
+//            Log.e(TAG, intent.getAction());
             if ("js.download.progress".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : officeList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
