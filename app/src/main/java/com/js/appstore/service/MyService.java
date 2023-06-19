@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.util.Log;
 
 import com.js.appstore.MyApplication;
 import com.js.appstore.R;
+import com.js.appstore.activity.MainActivity;
 import com.js.appstore.bean.DownBean;
 import com.js.appstore.bean.DownProgressBean;
 import com.js.appstore.receiver.DownloadReceiver;
@@ -88,6 +90,8 @@ public class MyService extends Service {
             // 静音通知
             channelId = createNotificationChannel("kim.hsl", "ForegroundService");
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+            builder.setContentIntent(PendingIntent.getActivity(MyService.this, (int) System.currentTimeMillis(), new Intent(MyService.this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            builder.setSmallIcon(R.mipmap.app_icon);
             Notification notification = builder.setOngoing(true)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setPriority(IMPORTANCE_MIN)
