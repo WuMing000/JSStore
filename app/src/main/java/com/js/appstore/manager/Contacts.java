@@ -6,6 +6,11 @@ public class Contacts {
     public static final String SERVER_URL = "http://119.23.48.238";
     public static final String SERVER_PORT = "8086";
 
+    public static final String FTP_SERVER_IP = "119.23.48.238";
+    public static final int FTP_SERVER_PORT = 21;
+    public static final String FTP_SERVER_USERNAME = "ftp_usera";
+    public static final String FTP_SERVER_PASSWORD = "123456";
+
     //RecommendFragment
     public static final String GET_BANNER_INFORMATION = "getBannerInformation";
     public static final String GET_USER_INFORMATION = "getUserInformation";

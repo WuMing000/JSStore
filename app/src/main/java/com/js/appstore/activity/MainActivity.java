@@ -43,6 +43,11 @@ import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 import com.js.appstore.view.UpdateDialog;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
+
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -54,6 +59,10 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity=========>";
+
+    private static final int UPDATE_VERSION_DIFFERENT = 0x001;
+    private static final int UPDATE_VERSION_SAME = 0x002;
+    private static final int NETWORK_NO_CONNECT = 0x003;
 
     private MainFragmentAdapter mainFragmentAdapter;
     private List<Fragment> fragmentList;
@@ -72,80 +81,50 @@ public class MainActivity extends AppCompatActivity {
         public void dispatchMessage(@NonNull Message msg) {
             super.dispatchMessage(msg);
             switch (msg.what) {
-                case 0x001 :
-                    Log.e(TAG, "版本号不一致");
-//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-//                    dialog = alertDialog.setMessage("有新版本")
-//                            .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    CustomUtil.exitAPP();
-//                                }
-//                            })
-//                            .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    DownBean downBean = CustomUtil.updateAPK("http://114.132.220.67:8080/test/js_project/store/js_store_1.0.apk");
-//                                    Timer timer = new Timer();
-//                                    timer.schedule(new TimerTask() {
-//                                        @Override
-//                                        public void run() {
-//                                            DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
-//                                            Log.e(TAG, downProgressBean.getProgress());
-//                                        }
-//                                    }, 0, 1000);
-//                                }
-//                            }).setCancelable(false).create();
-//                    dialog.show();
+                case NETWORK_NO_CONNECT:
+//                    Toast.makeText(MainActivity.this, "网络未连接，请先连接网络", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "network is not connect");
+                    break;
+                case UPDATE_VERSION_DIFFERENT:
+                    Log.e(TAG, "version is different");
+                    File saveFile = (File) msg.obj;
                     updateDialog = new UpdateDialog(MainActivity.this);
-                    updateDialog.setMessage("应用商店有新版本！！！");
+                    updateDialog.setMessage("应用商店发现新版本！！！");
                     updateDialog.setTitleVisible(View.GONE);
                     updateDialog.setExitOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            CustomUtil.killAppProcess();
                             updateDialog.dismiss();
                         }
                     });
                     updateDialog.setUpdateOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            updateDialog.setProgressVisible(View.VISIBLE);
-                            updateDialog.setButtonVisible(View.GONE);
-                            DownBean downBean = CustomUtil.updateAPK(Contacts.SERVER_URL + ":8080/test/js_project/store/js_store.apk");
-                            Timer timer = new Timer();
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    DownProgressBean downProgressBean = CustomUtil.updateProgress(downBean.getDownloadId(), timer);
-                                    Log.e(TAG, downProgressBean.getProgress());
-                                    try {
-                                        float progress = Float.parseFloat(downProgressBean.getProgress());
-                                        if (progress == 100.00) {
-                                            updateDialog.dismiss();
-                                        }
-                                        updateDialog.setPbProgress((int) progress);
-                                        updateDialog.setTvProgress(downProgressBean.getProgress());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        updateDialog.dismiss();
-                                        timer.cancel();
-                                        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                                        manager.remove(downProgressBean.getDownloadId());
-                                        handler.sendEmptyMessageAtTime(0x003, 100);
-                                    }
-                                }
-                            }, 0, 1000);
+                            updateDialog.dismiss();
+                            CustomUtil.installAPK(MainActivity.this, saveFile);
                         }
                     });
-                    updateDialog.setCancelable(false);
                     updateDialog.show();
                     break;
-                case 0x002 :
-                    Log.e(TAG, "版本号一致");
-                    break;
-                case 0x003 :
-                    Toast.makeText(MainActivity.this, "下载异常，已取消下载", Toast.LENGTH_SHORT).show();
+                case UPDATE_VERSION_SAME:
+                    Log.e(TAG, "version is same");
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            File file = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath());
+                            Log.e(TAG, file.listFiles().length + "");
+                            if (file.listFiles() != null) {
+                                for (File listFile : file.listFiles()) {
+                                    Log.e(TAG, listFile.getName() + "===========");
+                                    if (listFile.getName().contains("com.js.appstore")) {
+                                        listFile.delete();
+                                        Log.e(TAG, "delete update APK...");
+                                    }
+                                }
+                            }
+                        }
+                    }.start();
                     break;
             }
         }
@@ -244,19 +223,69 @@ public class MainActivity extends AppCompatActivity {
             setDefaultSelected(position);
         }
 
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+//                String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":8080/test/js_project/store/Version.txt");
+//                String localVersionName = CustomUtil.getLocalVersionName();
+//                if (localVersionName.equals(serverFile)) {
+//                    handler.sendEmptyMessageAtTime(0x002, 100);
+//                } else {
+//                    handler.sendEmptyMessageAtTime(0x001, 100);
+//                }
+//            }
+//        }.start();
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":8080/test/js_project/store/Version.txt");
+                Log.e(TAG, serverFile.length() + "=======wu");
                 String localVersionName = CustomUtil.getLocalVersionName();
+                if (serverFile.length() == 0) {
+                    handler.sendEmptyMessageAtTime(NETWORK_NO_CONNECT, 100);
+                    return;
+                }
                 if (localVersionName.equals(serverFile)) {
-                    handler.sendEmptyMessageAtTime(0x002, 100);
+                    handler.sendEmptyMessageAtTime(UPDATE_VERSION_SAME, 100);
                 } else {
-                    handler.sendEmptyMessageAtTime(0x001, 100);
+                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), "com.js.appstore_" + serverFile + ".apk");
+                    if (saveFile.exists()) {
+                        Message message = new Message();
+                        message.what = UPDATE_VERSION_DIFFERENT;
+                        message.obj = saveFile;
+                        handler.sendMessageAtTime(message, 100);
+                    } else {
+                        getUpdateAPK(serverFile);
+                    }
                 }
             }
         }.start();
+    }
+
+    private void getUpdateAPK(String version) {
+        try {
+            Log.e(TAG, "================开始");
+            FTPClient client = new FTPClient();
+            client.connect(Contacts.FTP_SERVER_IP, Contacts.FTP_SERVER_PORT);
+            client.login(Contacts.FTP_SERVER_USERNAME, Contacts.FTP_SERVER_PASSWORD);
+            client.configure(new FTPClientConfig(FTPClientConfig.SYST_UNIX));
+//                    int replyCode = client.getReplyCode();
+//                    Log.e(TAG, replyCode + "==============1111");
+            if (client.getReplyCode() == 230) {
+//                Log.e(TAG, "1111" + MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath());
+                CustomUtil.downLoadFile(client, MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath() + "/com.js.appstore_" + version, "com.js.appstore.apk");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                Thread.sleep(60000);
+                getUpdateAPK(version);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     private void setDefaultSelected(int position) {
