@@ -905,8 +905,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(foodList.get(position).getAppPackage());
                 } else {
-                    foodList.get(position).setAppState("下载");
-                    foodRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", foodList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -935,8 +936,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(shoppingList.get(position).getAppPackage());
                 } else {
-                    shoppingList.get(position).setAppState("下载");
-                    shoppingRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", shoppingList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -965,8 +967,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(serveList.get(position).getAppPackage());
                 } else {
-                    serveList.get(position).setAppState("下载");
-                    serveRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", serveList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -995,8 +998,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(practicalList.get(position).getAppPackage());
                 } else {
-                    practicalList.get(position).setAppState("下载");
-                    practicalRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", practicalList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -1025,8 +1029,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(sportList.get(position).getAppPackage());
                 } else {
-                    sportList.get(position).setAppState("下载");
-                    sportRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", sportList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -1055,8 +1060,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(healthList.get(position).getAppPackage());
                 } else {
-                    healthList.get(position).setAppState("下载");
-                    healthRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", healthList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -1085,8 +1091,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(investmentList.get(position).getAppPackage());
                 } else {
-                    investmentList.get(position).setAppState("下载");
-                    investmentRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", investmentList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -1115,8 +1122,9 @@ public class LifeFragment extends Fragment {
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(bringList.get(position).getAppPackage());
                 } else {
-                    bringList.get(position).setAppState("下载");
-                    bringRecyclerViewAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", bringList.get(position).getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();

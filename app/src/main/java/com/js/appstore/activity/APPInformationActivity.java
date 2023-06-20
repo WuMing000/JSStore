@@ -72,6 +72,7 @@ public class APPInformationActivity extends BaseActivity {
         intentFilter.addAction("js.app.download.completed");
         intentFilter.addAction("js.app.install.completed");
         intentFilter.addAction("js.app.remove.completed");
+        intentFilter.addAction("js.app.again.download");
         registerReceiver(downloadReceiver, intentFilter);
     }
 
@@ -161,7 +162,6 @@ public class APPInformationActivity extends BaseActivity {
                     Intent intent = new Intent("js.app.again.download");
                     intent.putExtra("packageName", appLocalBean.getAppPackage());
                     MyApplication.getInstance().getContext().sendBroadcast(intent);
-                    btnState.setText("下载");
                     Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
                     while (iterator.hasNext()) {
                         RemoveBean removeBean = iterator.next();
@@ -196,7 +196,7 @@ public class APPInformationActivity extends BaseActivity {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("打开");
                 }
-            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+            } else if ("js.app.again.download".equals(intent.getAction()) || "js.app.remove.completed".equals(intent.getAction())) {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("下载");
                 }
