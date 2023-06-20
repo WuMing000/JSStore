@@ -32,14 +32,14 @@
             android:screenOrientation="unspecified"
             android:theme="@style/MyThemeFullScreen"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
             android:screenOrientation="unspecified"
             android:theme="@style/MyThemeFullScreen"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:launchMode="singleTop">
+            android:launchMode="singleTask">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
