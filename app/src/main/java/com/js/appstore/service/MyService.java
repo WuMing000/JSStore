@@ -163,7 +163,7 @@ public class MyService extends Service {
                             }
                         }
                     }
-                }, 0, 1000);
+                }, 0, 3000);
 //                Log.e(TAG, downProgressBeanList.toString());
             }
         });
