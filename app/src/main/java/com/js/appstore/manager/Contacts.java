@@ -3,10 +3,10 @@ package com.js.appstore.manager;
 public class Contacts {
 
 //    public static final String SERVER_URL = "http://114.132.220.67";
-    public static final String SERVER_URL = "http://fs.arzopa.cn";
+    public static final String SERVER_URL = "http://fs.gworldtek.com";
     public static final String SERVER_PORT = "8086";
 
-    public static final String FTP_SERVER_IP = "fs.arzopa.com";
+    public static final String FTP_SERVER_IP = "fs.gworldtek.com";
     public static final int FTP_SERVER_PORT = 21;
     public static final String FTP_SERVER_USERNAME = "ftp_usera";
     public static final String FTP_SERVER_PASSWORD = "123456";

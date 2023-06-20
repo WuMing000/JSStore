@@ -148,166 +148,171 @@ public class RecommendFragment extends Fragment {
                     Bundle bundle = (Bundle) msg.obj;
                     String text = bundle.getString("text");
                     String url = bundle.getString("url");
-//                    Log.e(TAG, "text:" + text + ",url:" + url.split("/")[3]);
-                    ArrayList<APPServerBean> list = new Gson().fromJson(text, new TypeToken<List<APPServerBean>>() {
-                    }.getType());
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            for (APPServerBean appServerBean : list) {
-                                String appState = "下载";
-                                boolean appExists = CustomUtil.isAppInstalled(appServerBean.getAppPackage());
-                                File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appServerBean.getAppPackage() + ".apk");
-                                if (appExists) {
-                                    appState = "打开";
-                                } else if (saveFile.exists()) {
-                                    appState = "安装";
-                                }
-                                //定义一个对象，构建一行数据
-                                ContentValues values = new ContentValues();//用 value 表示一行
+                    Log.e(TAG, "text:" + text + ",url:" + url.split("/")[3]);
+                    try {
+                        ArrayList<APPServerBean> list = new Gson().fromJson(text, new TypeToken<List<APPServerBean>>() {
+                        }.getType());
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                for (APPServerBean appServerBean : list) {
+                                    String appState = "下载";
+                                    boolean appExists = CustomUtil.isAppInstalled(appServerBean.getAppPackage());
+                                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appServerBean.getAppPackage() + ".apk");
+                                    if (appExists) {
+                                        appState = "打开";
+                                    } else if (saveFile.exists()) {
+                                        appState = "安装";
+                                    }
+                                    //定义一个对象，构建一行数据
+                                    ContentValues values = new ContentValues();//用 value 表示一行
 //                                        values.put("appId", appServerBean.getAppId());
-                                values.put("appName", appServerBean.getAppName());
-                                values.put("appPackage", appServerBean.getAppPackage());
-                                values.put("appInformation", appServerBean.getAppInformation());
-                                values.put("appIcon", appServerBean.getAppIcon());
-                                values.put("appDownLoadURL", appServerBean.getAppDownLoadURL());
-                                values.put("appIntroduce", appServerBean.getAppIntroduce());
-                                values.put("appPicture", appServerBean.getAppPicture());
-                                if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("BannerInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("BannerInformation", null, values);
-                                        bannerList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x016, 100);
-                                    } else {
-//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("BannerInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("UserInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("UserInformation", null, values);
-                                        userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                    values.put("appName", appServerBean.getAppName());
+                                    values.put("appPackage", appServerBean.getAppPackage());
+                                    values.put("appInformation", appServerBean.getAppInformation());
+                                    values.put("appIcon", appServerBean.getAppIcon());
+                                    values.put("appDownLoadURL", appServerBean.getAppDownLoadURL());
+                                    values.put("appIntroduce", appServerBean.getAppIntroduce());
+                                    values.put("appPicture", appServerBean.getAppPicture());
+                                    if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("BannerInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("BannerInformation", null, values);
+                                            bannerList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
                                                     appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x007, 100);
-                                    } else {
+                                            handler.sendEmptyMessageAtTime(0x016, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("UserInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_CHOICE_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("ChoiceInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("ChoiceInformation", null, values);
-                                        choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x008, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("BannerInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_USER_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("UserInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("UserInformation", null, values);
+                                            userList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x007, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("ChoiceInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_WATCH_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("WatchInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("WatchInformation", null, values);
-                                        watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x009, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("UserInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_CHOICE_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("ChoiceInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("ChoiceInformation", null, values);
+                                            choiceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x008, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("WatchInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_BARRAGE_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("BarrageInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("BarrageInformation", null, values);
-                                        barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x010, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("ChoiceInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_WATCH_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("WatchInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("WatchInformation", null, values);
+                                            watchList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x009, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("BarrageInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_RELAX_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("RelaxInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("RelaxInformation", null, values);
-                                        relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x011, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("WatchInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_BARRAGE_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("BarrageInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("BarrageInformation", null, values);
+                                            barrageList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x010, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("RelaxInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_WORKPIECE_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("WorkpieceInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("WorkpieceInformation", null, values);
-                                        workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x012, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("BarrageInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_RELAX_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("RelaxInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("RelaxInformation", null, values);
+                                            relaxList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x011, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("WorkpieceInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_NEWS_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("NewsInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("NewsInformation", null, values);
-                                        newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x013, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("RelaxInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_WORKPIECE_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("WorkpieceInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("WorkpieceInformation", null, values);
+                                            workpieceList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x012, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("NewsInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
-                                    }
-                                    cursor.close();
-                                } else if (Contacts.GET_READ_INFORMATION.equals(url.split("/")[3])) {
-                                    Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
-                                            ("ReadInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
-                                    if (cursor.getCount() == 0) {
-                                        //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
-                                        MyApplication.getInstance().getSqLiteDatabase().insert("ReadInformation", null, values);
-                                        readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
-                                                appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
-                                        handler.sendEmptyMessageAtTime(0x014, 100);
-                                    } else {
+                                            MyApplication.getInstance().getSqLiteDatabase().update("WorkpieceInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_NEWS_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("NewsInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("NewsInformation", null, values);
+                                            newsList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x013, 100);
+                                        } else {
 //                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
-                                        MyApplication.getInstance().getSqLiteDatabase().update("ReadInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                            MyApplication.getInstance().getSqLiteDatabase().update("NewsInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
+                                    } else if (Contacts.GET_READ_INFORMATION.equals(url.split("/")[3])) {
+                                        Cursor cursor = MyApplication.getInstance().getSqLiteDatabase().query
+                                                ("ReadInformation", new String[]{"appId"}, "appId = ?", new String[]{appServerBean.getAppId() + ""}, null, null, null);
+                                        if (cursor.getCount() == 0) {
+                                            //将这一行数据存放到数据库的数据表中。参数：（表名，某些为空的列自动赋值 null，ContentValue 对象）
+                                            MyApplication.getInstance().getSqLiteDatabase().insert("ReadInformation", null, values);
+                                            readList.add(new APPLocalBean(appServerBean.getAppId(), appServerBean.getAppIcon(), appServerBean.getAppName(), appServerBean.getAppPackage(),
+                                                    appServerBean.getAppInformation(), appServerBean.getAppDownLoadURL(), appServerBean.getAppIntroduce(), appServerBean.getAppPicture(), appState));
+                                            handler.sendEmptyMessageAtTime(0x014, 100);
+                                        } else {
+//                                        Log.d(TAG, "已添加数据:" + appServerBean.getAppId());
+                                            MyApplication.getInstance().getSqLiteDatabase().update("ReadInformation", values, "appId=?", new String[] {appServerBean.getAppId() + ""});
+                                        }
+                                        cursor.close();
                                     }
-                                    cursor.close();
                                 }
-                            }
-                            if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
-                                handler.sendEmptyMessageAtTime(0x003, 100);
-                            }
+                                if (Contacts.GET_BANNER_INFORMATION.equals(url.split("/")[3])) {
+                                    handler.sendEmptyMessageAtTime(0x003, 100);
+                                }
 //                            handler.sendEmptyMessageAtTime(0x002, 100);
-                        }
-                    }.start();
+                            }
+                        }.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(MyApplication.getInstance().getContext(), "网站已过期", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case 0x006 :
 //                    downloadProgress();
