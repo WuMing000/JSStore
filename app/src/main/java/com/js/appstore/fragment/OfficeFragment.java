@@ -1,6 +1,7 @@
 package com.js.appstore.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,14 +31,18 @@ import com.js.appstore.adapter.ChoiceRecyclerViewAdapter;
 import com.js.appstore.adapter.UserRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
+import com.js.appstore.bean.RemoveBean;
 import com.js.appstore.manager.Contacts;
+import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -68,6 +73,7 @@ public class OfficeFragment extends Fragment {
     private List<APPLocalBean> networkDiskList;
 
     private DownloadReceiver receiver;
+    private DownloadManager downloadManager;
 
     private Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -353,6 +359,8 @@ public class OfficeFragment extends Fragment {
         instrumentRecyclerView.setAdapter(instrumentRecyclerViewAdapter);
         documentRecyclerView.setAdapter(documentRecyclerViewAdapter);
         communicationRecyclerView.setAdapter(communicationRecyclerViewAdapter);
+
+        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         if (savedInstanceState != null) {
             for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("officeList")) {
@@ -640,6 +648,7 @@ public class OfficeFragment extends Fragment {
         intentFilter.addAction("js.app.download.completed");
         intentFilter.addAction("js.app.install.completed");
         intentFilter.addAction("js.app.remove.completed");
+        intentFilter.addAction("js.app.again.download");
         MyApplication.getInstance().getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -737,6 +746,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(officeList.get(position).getAppPackage());
+                } else {
+                    officeList.get(position).setAppState("下载");
+                    officeRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (officeList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -755,6 +776,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(documentList.get(position).getAppPackage());
+                } else {
+                    documentList.get(position).setAppState("下载");
+                    documentRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (documentList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -773,6 +806,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(communicationList.get(position).getAppPackage());
+                } else {
+                    communicationList.get(position).setAppState("下载");
+                    communicationRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (communicationList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -791,6 +836,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(thoughtList.get(position).getAppPackage());
+                } else {
+                    thoughtList.get(position).setAppState("下载");
+                    thoughtRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (thoughtList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -809,6 +866,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(instrumentList.get(position).getAppPackage());
+                } else {
+                    instrumentList.get(position).setAppState("下载");
+                    instrumentRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (instrumentList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -827,6 +896,18 @@ public class OfficeFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(networkDiskList.get(position).getAppPackage());
+                } else {
+                    networkDiskList.get(position).setAppState("下载");
+                    networkDiskRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (networkDiskList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -949,7 +1030,7 @@ public class OfficeFragment extends Fragment {
                         networkDiskRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
-            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+            } else if ("js.app.again.download".equals(intent.getAction()) || "js.app.remove.completed".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : officeList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                         appLocalBean.setAppState("下载");

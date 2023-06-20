@@ -1,6 +1,7 @@
 package com.js.appstore.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,14 +31,18 @@ import com.js.appstore.adapter.ChoiceRecyclerViewAdapter;
 import com.js.appstore.adapter.UserRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
+import com.js.appstore.bean.RemoveBean;
 import com.js.appstore.manager.Contacts;
+import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -69,6 +74,7 @@ public class RecreationFragment extends Fragment {
     private List<APPLocalBean> liveList;
 
     private DownloadReceiver receiver;
+    private DownloadManager downloadManager;
 
     private Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -386,6 +392,8 @@ public class RecreationFragment extends Fragment {
         messageRecyclerView.setAdapter(messageRecyclerViewAdapter);
         reelRecyclerView.setAdapter(reelRecyclerViewAdapter);
         broadcastRecyclerView.setAdapter(broadcastRecyclerViewAdapter);
+
+        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         if (savedInstanceState != null) {
             for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("videoList")) {
@@ -715,6 +723,7 @@ public class RecreationFragment extends Fragment {
         intentFilter.addAction("js.app.download.completed");
         intentFilter.addAction("js.app.install.completed");
         intentFilter.addAction("js.app.remove.completed");
+        intentFilter.addAction("js.app.again.download");
         MyApplication.getInstance().getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -822,6 +831,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(videoList.get(position).getAppPackage());
+                } else {
+                    videoList.get(position).setAppState("下载");
+                    videoRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (videoList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -840,6 +861,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(cartoonList.get(position).getAppPackage());
+                } else {
+                    cartoonList.get(position).setAppState("下载");
+                    cartoonRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (cartoonList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -858,6 +891,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(messageList.get(position).getAppPackage());
+                } else {
+                    messageList.get(position).setAppState("下载");
+                    messageRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (messageList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -876,6 +921,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(hotspotList.get(position).getAppPackage());
+                } else {
+                    hotspotList.get(position).setAppState("下载");
+                    hotspotRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (hotspotList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -894,6 +951,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(reelList.get(position).getAppPackage());
+                } else {
+                    reelList.get(position).setAppState("下载");
+                    reelRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (reelList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -912,6 +981,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(broadcastList.get(position).getAppPackage());
+                } else {
+                    broadcastList.get(position).setAppState("下载");
+                    broadcastRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (broadcastList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -930,6 +1011,18 @@ public class RecreationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(liveList.get(position).getAppPackage());
+                } else {
+                    liveList.get(position).setAppState("下载");
+                    liveRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (liveList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1070,7 +1163,7 @@ public class RecreationFragment extends Fragment {
                         liveRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
-            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+            } else if ("js.app.again.download".equals(intent.getAction()) || "js.app.remove.completed".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : videoList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                         appLocalBean.setAppState("下载");

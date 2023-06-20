@@ -1,6 +1,7 @@
 package com.js.appstore.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,14 +31,18 @@ import com.js.appstore.adapter.ChoiceRecyclerViewAdapter;
 import com.js.appstore.adapter.UserRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
+import com.js.appstore.bean.RemoveBean;
 import com.js.appstore.manager.Contacts;
+import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -74,6 +79,7 @@ public class EducationFragment extends Fragment {
     private List<APPLocalBean> programmeList;
 
     private DownloadReceiver receiver;
+    private DownloadManager downloadManager;
 
     private Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -535,6 +541,8 @@ public class EducationFragment extends Fragment {
         preschoolRecyclerView.setAdapter(preschoolRecyclerViewAdapter);
         middleRecyclerView.setAdapter(middleRecyclerViewAdapter);
 
+        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+
         if (savedInstanceState != null) {
             for (Parcelable parcelable : savedInstanceState.getParcelableArrayList("classroomList")) {
                 classroomList.add((APPLocalBean) parcelable);
@@ -899,6 +907,7 @@ public class EducationFragment extends Fragment {
         intentFilter.addAction("js.app.download.completed");
         intentFilter.addAction("js.app.install.completed");
         intentFilter.addAction("js.app.remove.completed");
+        intentFilter.addAction("js.app.again.download");
         MyApplication.getInstance().getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -1055,6 +1064,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(classroomList.get(position).getAppPackage());
+                } else {
+                    classroomList.get(position).setAppState("下载");
+                    classroomRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (classroomList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1073,6 +1094,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(textualList.get(position).getAppPackage());
+                } else {
+                    textualList.get(position).setAppState("下载");
+                    textualRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (textualList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1091,6 +1124,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(englishList.get(position).getAppPackage());
+                } else {
+                    englishList.get(position).setAppState("下载");
+                    englishRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (englishList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1109,6 +1154,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(translateList.get(position).getAppPackage());
+                } else {
+                    translateList.get(position).setAppState("下载");
+                    translateRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (translateList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1127,6 +1184,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(teacherList.get(position).getAppPackage());
+                } else {
+                    teacherList.get(position).setAppState("下载");
+                    teacherRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (teacherList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1145,6 +1214,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(childrenList.get(position).getAppPackage());
+                } else {
+                    childrenList.get(position).setAppState("下载");
+                    childrenRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (childrenList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1163,6 +1244,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(pictureList.get(position).getAppPackage());
+                } else {
+                    pictureList.get(position).setAppState("下载");
+                    pictureRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (pictureList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1181,6 +1274,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(paintList.get(position).getAppPackage());
+                } else {
+                    paintList.get(position).setAppState("下载");
+                    paintRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (paintList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1199,6 +1304,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(enlightenList.get(position).getAppPackage());
+                } else {
+                    enlightenList.get(position).setAppState("下载");
+                    enlightenRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (enlightenList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1217,6 +1334,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(preschoolList.get(position).getAppPackage());
+                } else {
+                    preschoolList.get(position).setAppState("下载");
+                    preschoolRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (preschoolList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1235,6 +1364,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(middleList.get(position).getAppPackage());
+                } else {
+                    middleList.get(position).setAppState("下载");
+                    middleRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (middleList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1253,6 +1394,18 @@ public class EducationFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(programmeList.get(position).getAppPackage());
+                } else {
+                    programmeList.get(position).setAppState("下载");
+                    programmeRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (programmeList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -1483,7 +1636,7 @@ public class EducationFragment extends Fragment {
                         programmeRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
-            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+            } else if ("js.app.again.download".equals(intent.getAction()) || "js.app.remove.completed".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : classroomList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                         appLocalBean.setAppState("下载");

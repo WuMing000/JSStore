@@ -92,7 +92,7 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:background="@drawable/selector_btn_bg"
-                    android:text="打开" />
+                    android:text="下载" />
 
             </LinearLayout>
 

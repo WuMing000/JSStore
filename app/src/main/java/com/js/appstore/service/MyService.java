@@ -20,6 +20,7 @@ import com.js.appstore.R;
 import com.js.appstore.activity.MainActivity;
 import com.js.appstore.bean.DownBean;
 import com.js.appstore.bean.DownProgressBean;
+import com.js.appstore.bean.RemoveBean;
 import com.js.appstore.receiver.DownloadReceiver;
 import com.js.appstore.receiver.MyInstalledReceiver;
 import com.js.appstore.utils.CustomUtil;
@@ -44,7 +45,7 @@ public class MyService extends Service {
     private DownloadReceiver receiver;
     private MyInstalledReceiver myInstalledReceiver;
 
-    private List<Long> downloadIds;
+    public static List<RemoveBean> downloadIds;
     private DownloadManager downloadManager;
 
     public MyService() {
@@ -119,9 +120,9 @@ public class MyService extends Service {
             unregisterReceiver(myInstalledReceiver);
         }
         if (downloadIds.size() != 0) {
-            Log.e(TAG, downloadIds.toString());
-            for (Long downloadId : downloadIds) {
-                downloadManager.remove(downloadId);
+            Log.e(TAG, "downloadIds size:" + downloadIds.size() + "," + downloadIds);
+            for (int i = 0; i < downloadIds.size(); i++) {
+                downloadManager.remove(downloadIds.get(i).getRemoveId());
             }
         }
     }
@@ -131,15 +132,19 @@ public class MyService extends Service {
             @Override
             public void onDataChanged(String url, String packageName) {
                 DownBean downBean = CustomUtil.download(url, packageName);
-                downloadIds.add(downBean.getDownloadId());
                 Timer timer = new Timer();
+                downloadIds.add(new RemoveBean(packageName, downBean.getDownloadId(), timer));
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        if (!downloadIds.contains(new RemoveBean(packageName, downBean.getDownloadId(), timer))) {
+                            timer.cancel();
+                        }
                         DownProgressBean downProgressBean = CustomUtil.downloadProgress(downBean.getDownloadId(), timer);
                         if (downProgressBean.getProgress() != null) {
-                            Log.e(TAG, downProgressBean.getProgress() + "");
+                            Log.e(TAG, "progress:" + downProgressBean.getProgress());
                             if (downProgressBean.getProgress().contains("100.00")) {
+                                downloadIds.remove(new RemoveBean(packageName, downBean.getDownloadId(), timer));
                                 Log.e(TAG, "js.app.download.completed");
                                 Intent completedIntent = new Intent("js.app.download.completed");
 //                            completedIntent.putExtra("position", position);

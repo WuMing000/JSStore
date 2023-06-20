@@ -1,6 +1,7 @@
 package com.js.appstore.activity;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,11 +22,14 @@ import com.js.appstore.R;
 import com.js.appstore.adapter.ImageRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
+import com.js.appstore.bean.RemoveBean;
+import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +50,7 @@ public class APPInformationActivity extends BaseActivity {
     private APPLocalBean appLocalBean;
 
     private DownloadReceiver downloadReceiver;
+    private DownloadManager downloadManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class APPInformationActivity extends BaseActivity {
         downloadReceiver = new DownloadReceiver();
         IntentFilter intentFilter = new IntentFilter("js.download.progress");
         intentFilter.addAction("js.app.download.completed");
+        intentFilter.addAction("js.app.install.completed");
+        intentFilter.addAction("js.app.remove.completed");
         registerReceiver(downloadReceiver, intentFilter);
     }
 
@@ -72,18 +79,18 @@ public class APPInformationActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        boolean appExists = CustomUtil.isAppInstalled(appLocalBean.getAppPackage());
-        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
-        if (appExists) {
-            btnState.setText("打开");
-            appLocalBean.setAppState("打开");
-        } else if (saveFile.exists()) {
-            btnState.setText("安装");
-            appLocalBean.setAppState("安装");
-        } else {
-            btnState.setText("下载");
-            appLocalBean.setAppState("下载");
-        }
+//        boolean appExists = CustomUtil.isAppInstalled(appLocalBean.getAppPackage());
+//        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), appLocalBean.getAppPackage() + ".apk");
+//        if (appExists) {
+//            btnState.setText("打开");
+//            appLocalBean.setAppState("打开");
+//        } else if (saveFile.exists()) {
+//            btnState.setText("安装");
+//            appLocalBean.setAppState("安装");
+//        } else {
+//            btnState.setText("下载");
+//            appLocalBean.setAppState("下载");
+//        }
     }
 
     @Override
@@ -110,6 +117,8 @@ public class APPInformationActivity extends BaseActivity {
         adapter = new ImageRecyclerViewAdapter(this, mList);
         rvImageList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         rvImageList.setAdapter(adapter);
+
+        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         Intent intent = getIntent();
         appLocalBean = (APPLocalBean) intent.getSerializableExtra("appHomeBean");
@@ -148,6 +157,20 @@ public class APPInformationActivity extends BaseActivity {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(appLocalBean.getAppPackage());
+                } else {
+                    Intent intent = new Intent("js.app.again.download");
+                    intent.putExtra("packageName", appLocalBean.getAppPackage());
+                    MyApplication.getInstance().getContext().sendBroadcast(intent);
+                    btnState.setText("下载");
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (appLocalBean.getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -168,6 +191,14 @@ public class APPInformationActivity extends BaseActivity {
             } else if ("js.app.download.completed".equals(intent.getAction())) {
                 if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                     btnState.setText("安装");
+                }
+            } else if ("js.app.install.completed".equals(intent.getAction())) {
+                if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                    btnState.setText("打开");
+                }
+            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+                if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
+                    btnState.setText("下载");
                 }
             }
         }

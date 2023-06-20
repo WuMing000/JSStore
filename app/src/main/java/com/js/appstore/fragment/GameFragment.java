@@ -1,6 +1,7 @@
 package com.js.appstore.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,14 +31,18 @@ import com.js.appstore.adapter.ChoiceRecyclerViewAdapter;
 import com.js.appstore.adapter.UserRecyclerViewAdapter;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.bean.APPServerBean;
+import com.js.appstore.bean.RemoveBean;
 import com.js.appstore.manager.Contacts;
+import com.js.appstore.service.MyService;
 import com.js.appstore.utils.CustomUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -66,6 +71,7 @@ public class GameFragment extends Fragment {
     private List<APPLocalBean> cardList;
 
     private DownloadReceiver receiver;
+    private DownloadManager downloadManager;
 
     private Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -254,6 +260,8 @@ public class GameFragment extends Fragment {
 
         puzzleRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), puzzleList);
         chessRecyclerViewAdapter = new ChoiceRecyclerViewAdapter(getContext(), chessList);
+
+        downloadManager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         DisplayMetrics displayMetrics = MyApplication.getInstance().getContext().getResources().getDisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
@@ -491,6 +499,7 @@ public class GameFragment extends Fragment {
         intentFilter.addAction("js.app.download.completed");
         intentFilter.addAction("js.app.install.completed");
         intentFilter.addAction("js.app.remove.completed");
+        intentFilter.addAction("js.app.again.download");
         MyApplication.getInstance().getContext().registerReceiver(receiver, intentFilter);
     }
 
@@ -568,6 +577,18 @@ public class GameFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(playList.get(position).getAppPackage());
+                } else {
+                    playList.get(position).setAppState("下载");
+                    playfulRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (playList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -586,6 +607,18 @@ public class GameFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(chessList.get(position).getAppPackage());
+                } else {
+                    chessList.get(position).setAppState("下载");
+                    chessRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (chessList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -604,6 +637,18 @@ public class GameFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(puzzleList.get(position).getAppPackage());
+                } else {
+                    puzzleList.get(position).setAppState("下载");
+                    puzzleRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (puzzleList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -622,6 +667,18 @@ public class GameFragment extends Fragment {
                     CustomUtil.installAPK(MyApplication.getInstance().getContext(), saveFile);
                 } else if ("打开".equals(btnState.getText().toString())) {
                     CustomUtil.openAPK(cardList.get(position).getAppPackage());
+                } else {
+                    cardList.get(position).setAppState("下载");
+                    cardRecyclerViewAdapter.notifyDataSetChanged();
+                    Iterator<RemoveBean> iterator = MyService.downloadIds.iterator();
+                    while (iterator.hasNext()) {
+                        RemoveBean removeBean = iterator.next();
+                        if (cardList.get(position).getAppPackage().equals(removeBean.getPackageName())) {
+                            removeBean.getTimer().cancel();
+                            downloadManager.remove(removeBean.getRemoveId());
+                            iterator.remove();
+                        }
+                    }
                 }
             }
         });
@@ -708,7 +765,7 @@ public class GameFragment extends Fragment {
                         cardRecyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
-            } else if ("js.app.remove.completed".equals(intent.getAction())) {
+            } else if ("js.app.again.download".equals(intent.getAction()) || "js.app.remove.completed".equals(intent.getAction())) {
                 for (APPLocalBean appLocalBean : playList) {
                     if (appLocalBean.getAppPackage().equals(intent.getStringExtra("packageName"))) {
                         appLocalBean.setAppState("下载");
