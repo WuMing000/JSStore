@@ -59,29 +59,6 @@ public class CustomUtil {
 
     private static final String TAG = "CustomUtil============>";
 
-    public static void hideBottomUIMenu(Activity activity) {
-        int flags;
-        int curApiVersion = android.os.Build.VERSION.SDK_INT;
-        // This work only for android 4.4+
-        if(curApiVersion >= Build.VERSION_CODES.M){
-
-            // This work only for android 4.4+
-            // hide navigation bar permanently in android activity
-            // touch the screen, the navigation bar will not show
-
-            flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE
-                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        }else{
-            // touch the screen, the navigation bar will show
-            flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-        }
-
-        // must be executed in main thread :)
-        activity.getWindow().getDecorView().setSystemUiVisibility(flags);
-    }
-
     public static DownBean download(String url, String packageName) {
 
         DownloadManager manager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -259,17 +236,18 @@ public class CustomUtil {
     public static boolean isAppInstalled(String packageName) {
         PackageManager manager = MyApplication.getInstance().getContext().getPackageManager();
         Intent i = manager.getLaunchIntentForPackage(packageName);
-        if (i == null) {
-            return false;
-        }
-        return true;
+        return i != null;
     }
 
     public static void openAPK(String packageName) {
-        PackageManager pm = MyApplication.getInstance().getContext().getPackageManager();
-        Intent intent = pm.getLaunchIntentForPackage(packageName);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MyApplication.getInstance().getContext().startActivity(intent);
+        try {
+            PackageManager pm = MyApplication.getInstance().getContext().getPackageManager();
+            Intent intent = pm.getLaunchIntentForPackage(packageName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            MyApplication.getInstance().getContext().startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void killAppProcess()
@@ -288,14 +266,6 @@ public class CustomUtil {
         System.exit(0);
     }
 
-    public static void exitAPP() {
-        ActivityManager activityManager = (ActivityManager) MyApplication.getInstance().getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.AppTask> appTaskList = activityManager.getAppTasks();
-        for (ActivityManager.AppTask appTask : appTaskList) {
-            appTask.finishAndRemoveTask();
-        }
-    }
-
     /**
      * 判断视图v是否应该隐藏输入软键盘，若v不是输入框，返回false
      *
@@ -304,7 +274,7 @@ public class CustomUtil {
      * @return 视图v是否应该隐藏输入软键盘，若v不是输入框，返回false
      */
     public static boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
+        if ((v instanceof EditText)) {
             int[] leftTop = {0, 0};
             //获取输入框当前的location位置
             v.getLocationInWindow(leftTop);
@@ -329,19 +299,6 @@ public class CustomUtil {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
-    public static void setStatusBar(Activity activity) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-//            activity.getWindow().setStatusBarColor(MyApplication.getInstance().getContext().getResources().getColor(R.color.white, null));//设置状态栏颜色
-
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);//实现状态栏图标和文字颜色为暗色
-
-        }
-
-    }
-
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -415,77 +372,6 @@ public class CustomUtil {
             e.printStackTrace();
         }
         return localVersion;
-    }
-
-    public static DownBean updateAPK(String url) {
-
-        DownloadManager manager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-        /*
-         * 1. 封装下载请求
-         */
-        // 创建下载请求
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-
-        Log.e(TAG, MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath());
-        Log.e(TAG, url.substring(url.lastIndexOf("/") + 1));
-        File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), "com.js.store");
-        request.setDestinationUri(Uri.fromFile(saveFile));
-
-        if (saveFile.exists()) {
-            saveFile.delete();
-            Log.e(TAG, "删除");
-        }
-
-        long downloadId = manager.enqueue(request);
-
-        return new DownBean(downloadId);
-    }
-
-    public static DownProgressBean updateProgress(long downloadId, Timer timer) {
-        DownProgressBean downProgressBean = new DownProgressBean();
-        DownloadManager manager = (DownloadManager) MyApplication.getInstance().getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-        // 创建一个查询对象
-        DownloadManager.Query query = new DownloadManager.Query();
-        // 根据 下载ID 过滤结果
-        query.setFilterById(downloadId);
-        // 还可以根据状态过滤结果
-        // query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
-        // 执行查询, 返回一个 Cursor (相当于查询数据库)
-        Cursor cursor = manager.query(query);
-        if (!cursor.moveToFirst()) {
-            cursor.close();
-            return downProgressBean;
-        }
-        // 下载ID
-        @SuppressLint("Range") long id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID));
-        // 下载请求的状态
-        @SuppressLint("Range") int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
-        // 下载文件在本地保存的路径（Android 7.0 以后 COLUMN_LOCAL_FILENAME 字段被弃用, 需要用 COLUMN_LOCAL_URI 字段来获取本地文件路径的 Uri）
-        @SuppressLint("Range") String localFilename = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-        // 已下载的字节大小
-        @SuppressLint("Range") long downloadedSoFar = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-        // 下载文件的总字节大小
-        @SuppressLint("Range") long totalSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)) == -1 ? 1 : cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-        cursor.close();
-//        System.out.println("下载进度: " + downloadedSoFar  + "/" + totalSize);
-        DecimalFormat decimalFormat = new DecimalFormat( "##0.00 ");
-        String dd = decimalFormat.format(downloadedSoFar * 1.0f / totalSize * 100);
-//        Log.e(TAG, downloadedSoFar * 1.0f / totalSize * 100 + "");
-        Log.e(TAG, dd);
-        downProgressBean = new DownProgressBean(downloadId, dd);
-        if (status == DownloadManager.STATUS_SUCCESSFUL) {
-            File installFile = null;
-            File saveFile = new File(localFilename.substring(7));
-            if (saveFile.exists()) {
-                installFile = renameFile(localFilename.substring(7), localFilename.substring(7) + ".apk");
-            }
-//            System.out.println("下载成功, 打开文件, 文件路径: " + localFilename);
-            installAPK(MyApplication.getInstance().getContext(), installFile);
-            timer.cancel();
-        }
-
-        return downProgressBean;
     }
 
     /**
