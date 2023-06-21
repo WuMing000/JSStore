@@ -6,6 +6,12 @@ public class Contacts {
     public static final String SERVER_URL = "http://fs.gworldtek.com";
     public static final String SERVER_PORT = "8086";
 
+    public static final String TOMCAT_SERVER_PORT = "8080";
+    public static final String VERSION_URL = "/test/js_project/store/release/Version.txt";
+    public static final String PACKAGE_NAME = "com.js.appstore-release";
+//    public static final String VERSION_URL = "/test/js_project/store/debug/Version.txt";
+//    public static final String PACKAGE_NAME = "com.js.appstore-debug";
+
     public static final String FTP_SERVER_IP = "fs.gworldtek.com";
     public static final int FTP_SERVER_PORT = 21;
     public static final String FTP_SERVER_USERNAME = "ftp_usera";

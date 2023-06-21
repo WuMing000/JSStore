@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 super.run();
-                String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":8080/test/js_project/store/Version.txt");
+                String serverFile = CustomUtil.getServerFile(Contacts.SERVER_URL + ":"+ Contacts.TOMCAT_SERVER_PORT + Contacts.VERSION_URL);
                 Log.e(TAG, serverFile.length() + "=======");
                 String localVersionName = CustomUtil.getLocalVersionName();
                 if (serverFile.length() == 0) {
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                 if (localVersionName.equals(serverFile)) {
                     handler.sendEmptyMessageAtTime(UPDATE_VERSION_SAME, 100);
                 } else {
-                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), "com.js.appstore_" + serverFile + ".apk");
+                    File saveFile = new File(MyApplication.getInstance().getContext().getExternalFilesDir(null), Contacts.PACKAGE_NAME + "-" + serverFile + ".apk");
                     if (saveFile.exists()) {
                         Message message = new Message();
                         message.what = UPDATE_VERSION_DIFFERENT;
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 //                    Log.e(TAG, replyCode + "==============1111");
             if (client.getReplyCode() == 230) {
 //                Log.e(TAG, "1111" + MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath());
-                CustomUtil.downLoadFile(client, MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath() + "/com.js.appstore_" + version, "com.js.appstore.apk");
+                CustomUtil.downLoadFile(client, MyApplication.getInstance().getContext().getExternalFilesDir(null).getAbsolutePath() + "/" + Contacts.PACKAGE_NAME + "-" + version, Contacts.PACKAGE_NAME + ".apk");
             }
         } catch (IOException e) {
             e.printStackTrace();
