@@ -35,8 +35,6 @@
 # 这个过滤器是谷歌推荐的算法，一般不做更改
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
 
--dontobfuscate
--dontoptimize
 
 #############################################
 #
@@ -46,19 +44,18 @@
 
 # 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
 # 因为这些子类都有可能被外部调用
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Appliction
+-keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
--keep public class * extends android.view.View
--keep public class com.android.vending.licensing.ILicensingService
-
 
 # 保留support下的所有类及其内部类
 -keep class android.support.** {*;}
+
+-keep class org.apache.commons.net.** {*;}
+-keep class okhttp3.** {*;}
 
 # 保留继承的
 -keep public class * extends android.support.v4.**
@@ -118,21 +115,14 @@
     void *(**On*Listener);
 }
 
-# WebView处理，项目中没有使用到webView忽略即可
--keepclassmembers class fqcn.of.javascript.interface.for.webview {
-    public *;
-}
--keepclassmembers class * extends android.webkit.webViewClient {
-    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
-    public boolean *(android.webkit.WebView, java.lang.String);
-}
--keepclassmembers class * extends android.webkit.webViewClient {
-    public void *(android.webkit.webView, jav.lang.String);
-}
-
 #-----------处理实体类---------------
 # 在开发的时候我们可以将所有的实体类放在一个包内，这样我们写一次混淆就行了。
--keep class com.zzs.wanandroidmvvm.model.bean.** { *; }
+-keep class com.js.appstore.** { *; }
+
+-dontwarn org.conscrypt.OpenSSLProvider
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
 
 -assumenosideeffects class android.util.Log {
    public static *** d(...);
