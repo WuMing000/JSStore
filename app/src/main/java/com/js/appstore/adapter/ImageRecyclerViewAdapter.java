@@ -2,6 +2,7 @@ package com.js.appstore.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,14 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
+import com.facebook.imagepipeline.image.QualityInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.js.appstore.R;
 import com.js.appstore.bean.APPLocalBean;
 import com.js.appstore.manager.GlideRoundTransformation;
@@ -53,10 +62,21 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     @Override
     public void onBindViewHolder(@NonNull ImageRecyclerViewAdapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String s = mList.get(position);
-        RequestOptions options = new RequestOptions()
-                .priority(Priority.HIGH) //优先级
-                .transform(new GlideRoundTransformation(8)); //圆角
-        Glide.with(mContext).load(s).apply(options).into(holder.itemImage);
+        Uri uri = Uri.parse(s);
+//        RequestOptions options = new RequestOptions()
+//                .priority(Priority.HIGH) //优先级
+//                .transform(new GlideRoundTransformation(8)); //圆角
+//        Glide.with(mContext).load(s).apply(options).into(holder.itemImage);
+//        holder.itemImage.setImageURI(parse);
+        ImageRequest request = ImageRequestBuilder
+                .newBuilderWithSource(uri)
+                .setProgressiveRenderingEnabled(true)
+                .build();
+        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .setOldController(holder.itemImage.getController())
+                .build();
+        holder.itemImage.setController(controller);
     }
 
     @Override
@@ -65,7 +85,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView itemImage;
+        private SimpleDraweeView itemImage;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             itemImage = itemView.findViewById(R.id.item_image);
